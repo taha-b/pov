@@ -1,5 +1,5 @@
 const userRouter = require('express').Router();
-const { signin, signup } = require("../controllers/user-controllers");
+const { signin, signup, withGoogle } = require("../controllers/user-controllers");
 
 userRouter.route('/')
     .get((req, res) => {
@@ -10,11 +10,8 @@ userRouter.route('/')
     })
 userRouter.route('/google')
     .get((req, res) => {
-        const { name, uid, email } = req.headers
-        console.log(name, email, uid)
+        withGoogle(req, res)
     })
-    .post((req, res) => {
 
-    })
 
 module.exports = userRouter;
