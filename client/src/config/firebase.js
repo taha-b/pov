@@ -22,10 +22,10 @@ export const GoogleAuth = () => {
                 headers: { name: r.user.displayName, uid: r.user.uid, email: r.user.email }
             })
                 .then(response => {
-                    // handle success
+                    console.log(response.data);
                 })
                 .catch(error => {
-                    // handle error
+                    console.log(error)
                 })
         })
         .catch((error) => {
