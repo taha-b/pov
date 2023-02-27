@@ -21,7 +21,7 @@ exports.signup = function (req, res) {
         if (e.size) {
             res.send("user email already exist")
         } else {
-            const newUser = { name, password, email }
+            const newUser = { name, password, email, PI: [] }
             setDoc(doc(users), newUser)
                 .then((e) => {
                     // console.log(e)
@@ -47,7 +47,7 @@ exports.withGoogle = function (req, res) {
                 updateDoc(docRef, { uid }).then(() => res.send(newUser))
             }
         } else {
-            const newUser = { name, uid, email }
+            const newUser = { name, uid, email, PI: [] }
             setDoc(doc(users), newUser)
                 .then((e) => {
                     // console.log(e)
