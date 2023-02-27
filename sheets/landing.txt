@@ -1,0 +1,27 @@
+.Who is your idea customer ?
+=> Tourist, Traveling, adventurous;
+
+.What problem do they have ?
+=> management, visiting organisation
+(1: place a, 2: place :b); where to
+spend the night
+
+.Without your product what would
+they be doing ?
+=> losing time, no relatif hotel,
+restaurent & subordinate..., 
+
+.how is your product unique ?
+=> get hotel suggestions based on
+intrest points unlike google for 
+example who provide hotel rankings
+based on vote.
+
+.what do you want them to do on your
+landing page ?
+=> get to know us, steps how to use
+the app, publicity, login, signup,
+few pictures of the app functionality
+convice the page visitor to use the app
+instead of others. show(app users : comments &&|| rating)
+
