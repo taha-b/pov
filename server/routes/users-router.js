@@ -1,9 +1,9 @@
 const userRouter = require('express').Router();
-const { signin, signup, withGoogle } = require("../controllers/user-controllers");
+const { signin, signup, updateUser, withGoogle } = require("../controllers/user-controllers");
 
 userRouter.route('/')
     .patch((req, res) => {
-
+        updateUser(req, res)
     })
 userRouter.route('/login')
     .post((req, res) => {

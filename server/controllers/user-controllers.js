@@ -18,6 +18,8 @@ exports.signin = function (req, res) {
         res.send("email & password are a must to login")
     }
 };
+
+
 exports.signup = function (req, res) {
     const { name, password, email } = req.body
     const q = query(users, where("email", "==", email));
@@ -32,7 +34,7 @@ exports.signup = function (req, res) {
                 setDoc(doc(users), newUser)
                     .then((e) => {
                         // console.log(e)
-                        res.send("Added Succesfuly")
+                        res.send(newUser)
                     })
             }
         }).catch(err => res.send(err))
@@ -41,7 +43,7 @@ exports.signup = function (req, res) {
     }
 };
 
-
+//signin / signup with google
 exports.withGoogle = function (req, res) {
     const { name, uid, email } = req.body
     const q = query(users, where("email", "==", email));
@@ -66,3 +68,20 @@ exports.withGoogle = function (req, res) {
         }
     }).catch(err => res.send(err))
 };
+
+//user update
+exports.updateUser = function (req, res) {
+    const { id } = req.body
+    const docRef = doc(db, "users", id)
+    let updatedUser = { ...req.body }
+    delete updatedUser.id
+    updateDoc(docRef, updatedUser).then((e) => {
+        res.send(req.body)
+    })
+
+}
+
+
+
+
+
