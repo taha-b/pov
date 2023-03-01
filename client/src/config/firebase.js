@@ -18,8 +18,8 @@ const auth = getAuth(app);
 export const GoogleAuth = () => {
     signInWithPopup(auth, provider)
         .then((r) => {
-            axios.get(`http://localhost:3000/api/user/google`, {
-                headers: { name: r.user.displayName, uid: r.user.uid, email: r.user.email }
+            axios.post(`http://localhost:3000/api/user/google`, {
+                name: r.user.displayName, uid: r.user.uid, email: r.user.email
             })
                 .then(response => {
                     console.log(response.data);
