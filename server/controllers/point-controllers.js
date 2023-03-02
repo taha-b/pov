@@ -1,6 +1,5 @@
-const { async } = require("@firebase/util");
-const { listCollections, getCollections, doc, getDocs, collection, query, where, setDoc, getDoc, updateDoc, addDoc, deleteDoc, collectionGroup } = require("firebase/firestore");
-const { db, firebaseMapper } = require("../firebase/config")
+const { doc, getDocs, collection, query, where, setDoc, updateDoc, addDoc, deleteDoc, collectionGroup } = require("firebase/firestore");
+const { db } = require("../firebase/config")
 
 const points = collection(db, "points");
 
@@ -8,21 +7,22 @@ const points = collection(db, "points");
 
 
 exports.addPoint = function (req, res) {
-    const { category } = req.body
+    let { trip } = req.body
+    trip = trip[0].toUpperCase() + trip.slice(1).toLocaleLowerCase()
     const museumCollectionRef = collection(
-        db, "points", category + "s", category + "s"
+        db, "points", trip + "s", trip + "s"
     );
     addDoc(museumCollectionRef, req.body)
         .then((docRef) => {
             res.send("Point added with ID: " + docRef.id);
 
-            const q = query(collection(db, "points"), where("name", "==", category + "s"));
+            const q = query(collection(db, "points"), where("name", "==", trip + "s"));
             getDocs(q).then((snap) => {
                 if (snap.size) {
                     const docSize = snap.docs[0].data().size
-                    setDoc(doc(db, "points", category + "s"), { name: category + "s", size: docSize + 1 })
+                    setDoc(doc(db, "points", trip + "s"), { name: trip + "s", size: docSize + 1 })
                 } else {
-                    setDoc(doc(db, "points", category + "s"), { name: category + "s", size: 1 })
+                    setDoc(doc(db, "points", trip + "s"), { name: trip + "s", size: 1 })
                 }
             });
         })
@@ -34,18 +34,19 @@ exports.addPoint = function (req, res) {
 
 
 exports.deletePoint = function (req, res) {
-    const { category, id } = req.params
-    const subCollection = category + "s"
+    let { trip, id } = req.params
+    trip = trip[0].toUpperCase() + trip.slice(1).toLocaleLowerCase()
+    const subCollection = trip + "s"
     const ref = doc(db, "points", subCollection, subCollection, id);
     deleteDoc(ref)
         .then(() => {
-            const q = query(collection(db, "points"), where("name", "==", category + "s"));
+            const q = query(collection(db, "points"), where("name", "==", trip + "s"));
             getDocs(q).then((snap) => {
                 const docSize = snap.docs[0].data().size
                 if (docSize > 2) {
                     console.log(docSize)
 
-                    setDoc(doc(db, "points", category + "s"), { name: category + "s", size: docSize - 1 })
+                    setDoc(doc(db, "points", trip + "s"), { name: trip + "s", size: docSize - 1 })
                 } else {
                     console.log(docSize)
                     deleteDoc(doc(db, "points", subCollection))
@@ -58,8 +59,10 @@ exports.deletePoint = function (req, res) {
 }
 
 exports.editPoint = function (req, res) {
-    const { category, id } = req.params;
-    const subCollection = category + "s"
+    let { trip, id } = req.params;
+    trip = trip[0].toUpperCase() + trip.slice(1).toLocaleLowerCase()
+
+    const subCollection = trip + "s"
     const ref = doc(db, "points", subCollection, subCollection, id);
     updateDoc(ref, { title: "changed" })
         .then(() => {
@@ -86,4 +89,36 @@ exports.getAllPoints = function (req, res) {
         });
     });
 };
+exports.getAllCategories = function (req, res) {
+    let categories = [];
 
+    getDocs(collection(db, "points")).then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+            categories.push(doc.id);
+        });
+
+        res.send(categories);
+    });
+};
+
+exports.addMuseums = function (param) {
+    const trip = "Museum"
+    const museumCollectionRef = collection(
+        db, "points", trip + "s", trip + "s"
+    );
+    addDoc(museumCollectionRef, param)
+        .then((docRef) => {
+
+            const q = query(collection(db, "points"), where("name", "==", trip + "s"));
+            getDocs(q).then((snap) => {
+                if (snap.size) {
+                    const docSize = snap.docs[0].data().size
+                    setDoc(doc(db, "points", trip + "s"), { name: trip + "s", size: 63 })
+                } else {
+                    setDoc(doc(db, "points", trip + "s"), { name: trip + "s", size: 1 })
+                }
+            });
+        })
+        .catch((error) => {
+        });
+};
