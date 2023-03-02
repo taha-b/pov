@@ -77,8 +77,7 @@ exports.updateUser = function (req, res) {
     delete updatedUser.id
     updateDoc(docRef, updatedUser).then((e) => {
         res.send(req.body)
-    })
-
+    }).catch(err => res.send(err))
 }
 
 
