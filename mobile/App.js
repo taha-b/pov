@@ -1,24 +1,22 @@
-
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TextInput } from 'react-native';
+import Login from "./screens/Login/Index"
+import Signup from "./screens/Signup/Index"
+import { useState } from 'react';
 
 export default function App() {
+  const [view, setView] = useState("Login")
 
-
-
-
-
+  const Views = function () {
+    if (view === "Login") {
+      return <Login setView={setView} />
+    }
+    else if (view === "Signup") {
+      return <Signup setView={setView}/>
+    }
+  }
   return (
-    <View style={styles.container}>
-      qsd
+    <View style={{ backgroundColor: "white" }}>
+      <Views />
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
