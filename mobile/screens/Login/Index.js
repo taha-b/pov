@@ -3,7 +3,9 @@ import Header from '../../components/Signin/Header'
 import Inputs from './Inputs';
 import { useState } from 'react';
 import { useFonts, Lato_900Black } from '@expo-google-fonts/lato';
-export default function Index({ setView }) {
+import { login } from '../../functions/signin';
+
+export default function Index({ setView, setUser }) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -27,7 +29,7 @@ export default function Index({ setView }) {
                     marginTop: 30,
 
                 }}>
-                    <Pressable onPress={() => console.log({ email, password })}
+                    <Pressable onPress={() => login(email, password, setUser)}
                         style={{
                             backgroundColor: "#00b2ce",
                             width: 180,

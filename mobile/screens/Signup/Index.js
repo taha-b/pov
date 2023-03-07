@@ -4,7 +4,8 @@ import Header from '../../components/Signin/Header'
 import Inputs from './Inputs';
 import { useState } from 'react';
 import { useFonts, Lato_900Black, Lato_400Regular } from '@expo-google-fonts/lato';
-export default function Index({ setView }) {
+import { signup } from '../../functions/signin';
+export default function Index({ setView, setUser }) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [checkPass, setCheckPass] = useState('');
@@ -36,7 +37,9 @@ export default function Index({ setView }) {
                     marginTop: 30,
 
                 }}>
-                    <Pressable onPress={() => console.log({ email, password })}
+                    <Pressable onPress={() => {
+                        signup(email, password, checkPass, setUser)
+                    }}
                         style={{
                             backgroundColor: "#00b2ce",
                             width: 180,
@@ -50,14 +53,13 @@ export default function Index({ setView }) {
                             fontWeight: "bold",
                             marginTop: 5.5,
                             fontSize: 20
-                        }}>Login</Text>
+                        }}>Sign Up</Text>
                     </Pressable>
                 </View>
                 <View style={{ marginTop: 50, display: "flex", flexDirection: "row", alignSelf: "center" }}>
-
                     <Text
                         onPress={() => setView("Login")}
-                        style={{ fontSize: 19 }}> Have A Account ?</Text>
+                        style={{ fontSize: 19 }}> Have An Account ?</Text>
                 </View>
             </View>
         </TouchableWithoutFeedback>

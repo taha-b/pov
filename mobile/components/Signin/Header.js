@@ -1,6 +1,5 @@
-import { Text, View, Pressable } from 'react-native';
+import { Text, View, Pressable, Image } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
-import { Image } from 'react-native';
 
 
 export default function App({ page, focus, setView }) {

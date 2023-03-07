@@ -1,21 +1,29 @@
-import { StyleSheet, Text, View, TextInput } from 'react-native';
-import Login from "./screens/Login/Index"
-import Signup from "./screens/Signup/Index"
+import { View } from 'react-native';
+import Login from "./screens/login/index"
+import Signup from "./screens/signup/index"
+import Main from "./screens/main/index"
 import { useState } from 'react';
 
 export default function App() {
   const [view, setView] = useState("Login")
+  const [user, setUser] = useState(null)
 
   const Views = function () {
-    if (view === "Login") {
-      return <Login setView={setView} />
+    if (!user) {
+      if (view === "Login") {
+        return <Login setView={setView} setUser={setUser} />
+      }
+      else if (view === "Signup") {
+        return <Signup setView={setView} setUser={setUser} />
+      }
     }
-    else if (view === "Signup") {
-      return <Signup setView={setView}/>
+    else {
+      return <Main user={user} setUser={setUser} />
+
     }
   }
   return (
-    <View style={{ backgroundColor: "white" }}>
+    <View>
       <Views />
     </View>
   );

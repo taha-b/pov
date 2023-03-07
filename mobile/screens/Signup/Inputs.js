@@ -1,6 +1,5 @@
 import { View } from "react-native";
 import Input from "../../components/Signin/Input"
-
 export default function Inputs({ email, setEmail, password, setPassword, checkPass, setCheckPass, focus, setFocus }) {
     return (
         <View style={{ position: 'relative', display: "flex", alignItems: "center", marginTop: focus ? -100 : 0 }}>
