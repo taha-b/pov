@@ -1,4 +1,4 @@
-const { doc, getDocs, collection, query, where, setDoc, getDoc, updateDoc } = require("firebase/firestore");
+const { doc, getDocs, collection, query, where, setDoc, getDoc, updateDoc, addDoc } = require("firebase/firestore");
 const { db, firebaseMapper } = require("../firebase/config")
 
 
@@ -7,11 +7,12 @@ const users = collection(db, "users");
 
 exports.signin = function (req, res) {
     const { email, password } = req.body
-    console.log(email, password)
+    console.log("login trigerred")
     if (email && password) {
         const q = query(users, where("email", "==", email), where("password", "==", password));
         getDocs(q).then((e) => {
             const user = firebaseMapper(e)
+            console.log(user)
             res.send(user)
         }).catch(err => res.send("user not found"))
     } else {
@@ -21,25 +22,25 @@ exports.signin = function (req, res) {
 
 
 exports.signup = function (req, res) {
-    const { name, password, email } = req.body
+    console.log("signup triggered")
+
+    const { password, email } = req.body
     const q = query(users, where("email", "==", email));
     if (email && password) {
-
         getDocs(q).then((e) => {
             console.log(e.size)
             if (e.size) {
                 res.send("user email already exist")
             } else {
-                const newUser = { name, password, email, PI: [] }
-                setDoc(doc(users), newUser)
-                    .then((e) => {
-                        // console.log(e)
-                        res.send(newUser)
+                const newUser = { ...req.body, trips: [] }
+                addDoc(users, newUser)
+                    .then((docRef) => {
+                        res.send({ ...newUser, id: docRef.id });
                     })
             }
         }).catch(err => res.send(err))
     } else {
-        res.send("email & password are a must to login")
+        res.send("must have an email & password")
     }
 };
 
@@ -59,7 +60,7 @@ exports.withGoogle = function (req, res) {
                 updateDoc(docRef, { uid }).then(() => res.send(newUser))
             }
         } else {
-            const newUser = { name, uid, email, PI: [] }
+            const newUser = { name, uid, email, trips: [] }
             setDoc(doc(users), newUser)
                 .then((e) => {
                     // console.log(e)

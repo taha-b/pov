@@ -14,7 +14,7 @@ exports.addPoint = function (req, res) {
     );
     addDoc(museumCollectionRef, req.body)
         .then((docRef) => {
-            res.send("Point added with ID: " + docRef.id);
+            res.send({ ...req.body, id: docRef.id });
 
             const q = query(collection(db, "points"), where("name", "==", trip + "s"));
             getDocs(q).then((snap) => {

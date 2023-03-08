@@ -1,20 +1,26 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState } from 'react';
+import * as Font from 'expo-font';
+import SigninNavigator from './routes/SigninStack';
+import { ApplicationProvider, Layout, Text } from '@ui-kitten/components';
+import * as eva from '@eva-design/eva';
+
 
 export default function App() {
+  // const [user, setUser] = useState({ name: "admin" })
+  const [user, setUser] = useState(null)
+
+  const Navigators = function () {
+    if (!user) {
+      return <SigninNavigator setUser={setUser} />
+    }
+    else {
+      return null
+    }
+  }
+
   return (
-    <View style={styles.container}>
-      <Text>Hello</Text>
-      <StatusBar style="auto" />
-    </View>
+    <ApplicationProvider {...eva} theme={eva.light}>
+      <Navigators />
+    </ApplicationProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
