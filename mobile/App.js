@@ -1,30 +1,26 @@
-import { View } from 'react-native';
-import Login from "./screens/login/index"
-import Signup from "./screens/signup/index"
-import Main from "./screens/main/index"
-import { useState } from 'react';
+import React, { useState } from 'react';
+import * as Font from 'expo-font';
+import SigninNavigator from './routes/SigninStack';
+import { ApplicationProvider, Layout, Text } from '@ui-kitten/components';
+import * as eva from '@eva-design/eva';
+
 
 export default function App() {
-  const [view, setView] = useState("Login")
+  // const [user, setUser] = useState({ name: "admin" })
   const [user, setUser] = useState(null)
 
-  const Views = function () {
+  const Navigators = function () {
     if (!user) {
-      if (view === "Login") {
-        return <Login setView={setView} setUser={setUser} />
-      }
-      else if (view === "Signup") {
-        return <Signup setView={setView} setUser={setUser} />
-      }
+      return <SigninNavigator setUser={setUser} />
     }
     else {
-      return <Main user={user} setUser={setUser} />
-
+      return null
     }
   }
+
   return (
-    <View>
-      <Views />
-    </View>
+    <ApplicationProvider {...eva} theme={eva.light}>
+      <Navigators />
+    </ApplicationProvider>
   );
 }

@@ -5,7 +5,7 @@ import Inputs from './Inputs';
 import { useState } from 'react';
 import { useFonts, Lato_900Black, Lato_400Regular } from '@expo-google-fonts/lato';
 import { signup } from '../../functions/signin';
-export default function Index({ setView, setUser }) {
+export default function Index({ navigation }) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [checkPass, setCheckPass] = useState('');
@@ -21,8 +21,8 @@ export default function Index({ setView, setUser }) {
 
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-            <View>
-                <Header page={"Signup"} setView={setView}
+            <View style={{ backgroundColor: "white" }}>
+                <Header page={"Signup"} navigation={navigation}
                     focus={checkPassFocus} setFocus={setCheckPassFocus}
                 />
                 <View style={{ height: 80 }} />
@@ -38,10 +38,12 @@ export default function Index({ setView, setUser }) {
 
                 }}>
                     <Pressable onPress={() => {
-                        signup(email, password, checkPass, setUser)
+                      
+
+                        signup(null, navigation, email, password, checkPass)
                     }}
                         style={{
-                            backgroundColor: "#00b2ce",
+                            backgroundColor: "#181d3d",
                             width: 180,
                             height: 40,
                             display: "flex",
@@ -58,7 +60,7 @@ export default function Index({ setView, setUser }) {
                 </View>
                 <View style={{ marginTop: 50, display: "flex", flexDirection: "row", alignSelf: "center" }}>
                     <Text
-                        onPress={() => setView("Login")}
+                        onPress={() => navigation.navigate("Login")}
                         style={{ fontSize: 19 }}> Have An Account ?</Text>
                 </View>
             </View>

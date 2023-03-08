@@ -2,20 +2,13 @@ import { View, TouchableWithoutFeedback, Keyboard, Text, Pressable } from 'react
 import Header from '../../components/Signin/Header'
 import Inputs from './Inputs';
 import { useState } from 'react';
-import { useFonts, Lato_900Black } from '@expo-google-fonts/lato';
 import { login } from '../../functions/signin';
 
-export default function Index({ setView, setUser }) {
+export default function Index({ navigation, setUser }) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    let [fontsLoaded] = useFonts({
-        Lato_900Black,
-    });
 
-    if (!fontsLoaded) {
-        return null;
-    }
 
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
@@ -31,7 +24,7 @@ export default function Index({ setView, setUser }) {
                 }}>
                     <Pressable onPress={() => login(email, password, setUser)}
                         style={{
-                            backgroundColor: "#00b2ce",
+                            backgroundColor: "#181d3d",
                             width: 180,
                             height: 40,
                             display: "flex",
@@ -48,12 +41,11 @@ export default function Index({ setView, setUser }) {
                 </View>
                 <View style={{ marginTop: 50 }}>
                     <Text style={{ textAlign: "center", fontSize: 19 }}>Dont Have A Account ?</Text>
-                    <Text onPress={() => setView("Signup")} style={{
+                    <Text onPress={() => navigation.navigate("Signup")} style={{
                         textAlign: "center",
                         fontSize: 25,
                         fontWeight: "bold",
-                        fontFamily: 'Lato_900Black',
-                        color: "#00b2ce",
+                        color: "#181d3d",
                         marginTop: 10
                     }}>Sign Up!</Text>
                 </View>
