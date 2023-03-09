@@ -88,5 +88,18 @@ exports.getAllPoints = function (req, res) {
         });
     });
 };
+exports.getPointsOf1Trip = function (req, res) {
+    const { trip } = req.params
+    getDocs(query(collectionGroup(db, trip))).then((snap) => {
+        if (snap.size) {
+            const points = snap.docs.map(e => {
+                return { ...e.data(), id: e.id }
+            })
+            res.send(points)
+        } else {
+            res.send({})
+        }
+    }).catch(err => res.send("Trip Not Found"));
+};
 
 
