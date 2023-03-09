@@ -1,4 +1,4 @@
-const { doc, getDocs, collection, query, where, setDoc, getDoc, updateDoc, addDoc } = require("firebase/firestore");
+const { doc, getDocs, collection, query, where, setDoc, deleteDoc, updateDoc, addDoc } = require("firebase/firestore");
 const { db, firebaseMapper } = require("../firebase/config")
 
 
@@ -19,6 +19,14 @@ exports.signin = function (req, res) {
         res.send("email & password are a must to login")
     }
 };
+exports.getAll = function (req, res) {
+    console.log("get All trigerred")
+    getDocs(users).then((e) => {
+        const allUsers = e.docs.map(el => { return { ...el.data(), id: el.id } })
+        console.log(allUsers)
+        res.send(allUsers)
+    }).catch(err => res.send(err))
+};
 
 
 exports.signup = function (req, res) {
@@ -32,7 +40,7 @@ exports.signup = function (req, res) {
             if (e.size) {
                 res.send("user email already exist")
             } else {
-                const newUser = { ...req.body, trips: [] }
+                const newUser = { ...req.body, history: [] }
                 addDoc(users, newUser)
                     .then((docRef) => {
                         res.send({ ...newUser, id: docRef.id });
@@ -60,7 +68,7 @@ exports.withGoogle = function (req, res) {
                 updateDoc(docRef, { uid }).then(() => res.send(newUser))
             }
         } else {
-            const newUser = { name, uid, email, trips: [] }
+            const newUser = { name, uid, email, history: [] }
             setDoc(doc(users), newUser)
                 .then((e) => {
                     // console.log(e)
@@ -79,6 +87,12 @@ exports.updateUser = function (req, res) {
     updateDoc(docRef, updatedUser).then((e) => {
         res.send(req.body)
     }).catch(err => res.send(err))
+}
+exports.deleteUser = function (req, res) {
+    const { id } = req.params
+    deleteDoc(doc(db, "users", id))
+        .then(() => res.send("DELETED"))
+        .catch((err) => err)
 }
 
 
