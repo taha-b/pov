@@ -1,4 +1,4 @@
-const { doc, getDocs, collection, query, where, setDoc, updateDoc, addDoc, deleteDoc, collectionGroup } = require("firebase/firestore");
+const { getDoc, doc, getDocs, collection, query, where, setDoc, updateDoc, addDoc, deleteDoc, collectionGroup } = require("firebase/firestore");
 const { db } = require("../firebase/config")
 
 
@@ -7,23 +7,24 @@ const { db } = require("../firebase/config")
 
 exports.addPoint = function (req, res) {
     let { trip } = req.body
-    trip = trip[0].toUpperCase() + trip.slice(1).toLocaleLowerCase()
-    const museumCollectionRef = collection(
+    trip = trip[0].toUpperCase() + trip.slice(1)
+    const tripCollectionRef = collection(
         db, "points", trip, trip
     );
-    addDoc(museumCollectionRef, req.body)
+    addDoc(tripCollectionRef, req.body)
         .then((docRef) => {
             res.send({ ...req.body, id: docRef.id });
 
-            const q = query(collection(db, "points"), where("name", "==", trip));
-            getDocs(q).then((snap) => {
+            const collectionName = query(collectionGroup(db, trip));
+
+            getDocs(collectionName).then((snap) => {
+                console.log(snap.size)
                 if (snap.size) {
-                    const docSize = snap.docs[0].data().size
-                    setDoc(doc(db, "points", trip), { name: trip, size: docSize + 1 })
+                    updateDoc(doc(db, "points", trip), { name: trip, size: snap.size })
                 } else {
                     setDoc(doc(db, "points", trip), { name: trip, size: 1 })
                 }
-            });
+            });         
         })
         .catch((error) => {
             res.send("Error adding Point: " + error);
@@ -34,36 +35,38 @@ exports.addPoint = function (req, res) {
 
 exports.deletePoint = function (req, res) {
     let { trip, id } = req.params
-    trip = trip[0].toUpperCase() + trip.slice(1).toLocaleLowerCase()
+    trip = trip[0].toUpperCase() + trip.slice(1)
     const subCollection = trip
     const ref = doc(db, "points", subCollection, subCollection, id);
     deleteDoc(ref)
         .then(() => {
-            const q = query(collection(db, "points"), where("name", "==", trip));
-            getDocs(q).then((snap) => {
-                const docSize = snap.docs[0].data().size
-                if (docSize > 2) {
-                    console.log(docSize)
+            const collectionName = query(collectionGroup(db, trip));
 
-                    setDoc(doc(db, "points", trip), { name: trip, size: docSize - 1 })
+            getDocs(collectionName).then((snap) => {
+                console.log(snap.size)
+
+                if (snap.size) {
+                    console.log("true")
+                    setDoc(doc(db, "points", trip), { name: trip, size: snap.size })
                 } else {
-                    console.log(docSize)
+                    console.log("delete all")
                     deleteDoc(doc(db, "points", subCollection))
                 }
 
             });
-            res.send("Point deleted")
+            res.send("Point with the id :" + "'" + id + "'" + " deleted")
         })
         .catch(err => res.send('Error adding point ' + err))
 }
 
+
 exports.editPoint = function (req, res) {
     let { trip, id } = req.params;
-    trip = trip[0].toUpperCase() + trip.slice(1).toLocaleLowerCase()
+    trip = trip[0].toUpperCase() + trip.slice(1)
 
     const subCollection = trip
     const ref = doc(db, "points", subCollection, subCollection, id);
-    updateDoc(ref, { title: "changed" })
+    updateDoc(ref, req.body)
         .then(() => {
             res.send("Point updated");
         }).catch(err => res.send("Error updating point" + err))
