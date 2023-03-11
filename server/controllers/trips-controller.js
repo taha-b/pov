@@ -32,7 +32,7 @@ const deleteTrip = function (req, res) {
                 deleteDoc(doc(db, "points", name)).then(() => res.send("DELETED")).catch((err) => err)
             });
         } else {
-            res.send("no")
+            deleteDoc(doc(db, "points", name)).then(() => res.send("DELETED")).catch((err) => err)
         }
     });
 }
