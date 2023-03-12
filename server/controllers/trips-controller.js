@@ -52,11 +52,11 @@ exports.getTrips = function (req, res) {
 exports.updateTrip = function (req, res) {
     const { name } = req.params
     const docRef = doc(db, "points", name)
-    const updatedName = req.body.name[0].toUpperCase() + req.body.name.slice(1)
     if (req.body.size) {
         res.send("you cannot update the size of a trip manually")
     }
-    else if (updatedName) {
+    else if (req.body.name) {
+        const updatedName = req.body.name[0].toUpperCase() + req.body.name.slice(1)
         getDocs(query(collectionGroup(db, name))).then((snap) => {
             if (snap.size) {
                 const promises = snap.docs.map((subDoc) => {

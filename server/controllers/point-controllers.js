@@ -18,10 +18,12 @@ exports.addPoint = function (req, res) {
             const collectionName = query(collectionGroup(db, trip));
 
             getDocs(collectionName).then((snap) => {
-                if (snap.size > 1) {
+                console.log(snap.size > 1)
+                if (snap.size) {
                     updateDoc(doc(db, "points", trip), { name: trip, size: snap.size })
+                        .then(() => console.log("adding a new trip to the point"))
+                        .catch(() => setDoc(doc(db, "points", trip), { name: trip, size: snap.size }))
                 } else {
-                    console.log("new trip added")
                     setDoc(doc(db, "points", trip), { name: trip, size: 1 })
                 }
             });
