@@ -1,9 +1,7 @@
 @import 'leaflet/dist/leaflet.css';
 .leaflet-container {
   width: 90%;
-  height: 100vh;
-  border-radius: 5px;
-  margin-left: 50px;
+  height: 100vh
   
 }
 
@@ -391,4 +389,11 @@ footer .logo{
 }
 .table :after, :before {
   box-sizing: border-box;
+}
+
+.AddLongLat{
+  position: fixed;
+  bottom: 50px; 
+  left: 47%; 
+  z-index: 1000;
 }

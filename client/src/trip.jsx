@@ -18,8 +18,9 @@ const trip = () => {
     axios
       .get("http://localhost:3000/api/trip/")
       .then((result) => {
-        setTripData(result.data);
         
+        setTripData(result.data);
+        console.log(result.data)
       })
       .catch((error) => console.log(error));
   };
