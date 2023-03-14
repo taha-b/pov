@@ -11,6 +11,7 @@ import AddTripForm from "./addTripForm.jsx";
 import Points from "./points.jsx";
 import Trip from "./trip.jsx"
 import AddPointForm from "./addPointForm"
+import Map from "./map.jsx"
 
 
 const router = createHashRouter([
@@ -50,6 +51,10 @@ const router = createHashRouter([
   {
     path: "/pointForm",
     element: <AddPointForm />,
+  },
+  {
+    path: "/map",
+    element: <Map />,
   },
   
   
