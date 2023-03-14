@@ -20,8 +20,7 @@ exports.addTrip = function (req, res) {
 
 const deleteTrip = function (req, res) {
     let { name } = req.params
-    name = name[0].toUpperCase() + name.slice(1).toLocaleLowerCase()
-
+    name = name[0].toUpperCase() + name.slice(1)
     // deleteDoc(doc(db, "points", name))
     getDocs(query(collectionGroup(db, name))).then((snap) => {
         if (snap.size) {
@@ -29,7 +28,7 @@ const deleteTrip = function (req, res) {
                 return deleteDoc(doc(db, "points", name, name, subDoc.id))
             });
             Promise.all(promises).then(() => {
-                deleteDoc(doc(db, "points", name)).then(() => res.send("DELETED")).catch((err) => err)
+                deleteDoc(doc(db, "points", name)).then(() => res ? res.send("DELETED") : console.log("DELETED")).catch((err) => res ? res.send(err) : console.log(err))
             });
         } else {
             deleteDoc(doc(db, "points", name)).then(() => res.send("DELETED")).catch((err) => err)
@@ -53,7 +52,7 @@ exports.getTrips = function (req, res) {
 exports.updateTrip = function (req, res) {
     const { name } = req.params
     const docRef = doc(db, "points", name)
-    const updatedName = req.body.name
+    const updatedName = req.body.name[0].toUpperCase() + req.body.name.slice(1)
     if (req.body.size) {
         res.send("you cannot update the size of a trip manually")
     }
@@ -72,7 +71,9 @@ exports.updateTrip = function (req, res) {
 
                 });
             } else {
-                res.send("Trip Not Found")
+                updateDoc(docRef, req.body).then((e) => {
+                    res.send(req.body)
+                }).catch(err => res.send(err))
             }
         });
     } else {

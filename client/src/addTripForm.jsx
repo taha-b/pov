@@ -2,7 +2,8 @@
 import axios from 'axios';
 import React from 'react'
 import { useState } from 'react';
-import { Input,Button } from "antd";
+import { Input,Button,Upload } from "antd";
+import {UploadOutlined} from "@ant-design/icons"
 import { Link } from 'react-router-dom';
 import { useParams} from 'react-router';
 
@@ -10,107 +11,96 @@ import { useParams} from 'react-router';
 const addTripForm = () => {
   const param = useParams()
   
+  const [imageUpload, setImageUpload] = useState('');
   const [newTitle,setNewTitle]=useState('')
   const [newDiscription,setNewDiscription]=useState('')
   const [newTag,setNewTag]=useState([])
     
         
-  const addNewTrip=()=>{
-    console.log({name : newTitle,desc : newDiscription,tag : newTag})
-    axios
-    .post('http://localhost:3000/api/trip',{name : newTitle,desc : newDiscription,tag : newTag})
-    .then((result)=>{
-      
-      setNewTitle("")
-    setNewDiscription("")
-    setNewTag([])
-    })
-    .catch((error)=>console.log(error,'zzz'))
-  }
+  const uploadImg = async () => {
+    const formData = new FormData();
+    formData.append('file', imageUpload);
+    formData.append('upload_preset', 'gmysyjod');
+    
+    const response = await axios.post('https://api.cloudinary.com/v1_1/dk2x78b4b/image/upload', formData);
+    console.log(response);
+    console.log(response.data.secure_url);
+    return response.data.secure_url;
+  };
+  const addNewTrip = () => {
+
+    uploadImg(imageUpload).then((imageUrl) => {
+      axios.post('http://localhost:3000/api/trip', {
+        name: newTitle,
+        desc: newDiscription,
+        tag: newTag,
+        imgUrl: imageUrl,
+      })
+      .then((result) => {
+        setNewTitle('');
+        setNewDiscription('');
+        setNewTag([]);
+        setImageUpload('');
+        
+      })
+      .catch((error) => console.log(error));
+    });
+  };
+  
 
   const updateTrip=()=>{
-    axios.patch(`http://localhost:3000/api/trip/${param.name}`,{name:newTitle,desc:newDiscription,tag:newTag})
+    
+    uploadImg(imageUpload).then((imageUrl) => {
+      axios.patch(`http://localhost:3000/api/trip/${param.name}`,{name:newTitle,desc:newDiscription,tag:newTag,imgUrl: imageUrl})
     .then((result)=>{
-      console.log(result)
+      
       setNewTitle('')
       setNewDiscription('')
       setNewTag([])
+      setImageUpload('');
     })
     .catch((error)=>console.log(error))
-  }
+  })
+}
 
-      // function UploadImg() {
-        // const [imageUpload, setimageUpload] = useState("");
-        // const UploadImg = () => {
-        //   const formData = new FormData();
-        //   formData.append("file", imageUpload);
-        //   formData.append("upload_preset", "djqjuoks");
-        //   axios
-        //     .post("https://api.cloudinary.com/v1_1/dk2x78b4b/image/upload", formData)
-        //     .then((response) => {
-        //       console.log(response);
-        //       console.log(response.data.secure_url);
-        //       let imgurl = response.data.secure_url;
-        //       console.log("img for the Trip", imgurl);
-            //   axios
-            //     .put(`http://localhost:3000/api/user/updateUser/31`, {
-            //       profile: imgurl,
-            //     })
-            //     .then((response) => {
-            //       console.log(response);
-            //     });
-        //     });
-        // }}
+
+  
   return (
     <div>
        <form className="forms">
+       <input
+        type="file"
+        onChange={(e) => {
+          setImageUpload(e.target.files[0]);
+        }}
+      />
         <Input
           className="site-form-item-icon"
           onChange={(event) => setNewTitle(event.target.value)}
-          
           placeholder="Title"
         />
         <Input
           className="site-form-item-icon"
           onChange={(event) => setNewDiscription(event.target.value)}
-          
-          
           placeholder="Discription"
         />
         <Input
           className="site-form-item-icon"
           onChange={(event) => setNewTag(event.target.value)}
-          
-          
-          placeholder="Discription"
+          placeholder="Tags"
         />
-        {/* <Input
-        className='input-file'
-        type="file"
-        onChange={(e) => {
-          setimageUpload(e.target.files[0]);
-        }}
-      /> */}
+      
 <Link to='/trip'>
   <Button className='plus' 
-  onClick={()=>{
+  onClick={
   
-    param && param.name ? addNewTrip : updateTrip
-    console.log(param.name)}}>
-    {param && param.name ? "Submit" : 'Update'}
+    param && param.name ? updateTrip : addNewTrip    
+    }>
+    {param && param.name ? 'Update': "Submit"  }
     </Button>
     </Link>
-        {/* <Button
-          onClick={() => myClick(addNewTrip)}
-          type="primary"
-          htmlType="submit"
-          className="login-form-button"
-        >
-          Submit
-        </Button> */}
-      
-      </form>
+       </form>
     </div>
   )
 }
-export default addTripForm
+export default addTripForm;

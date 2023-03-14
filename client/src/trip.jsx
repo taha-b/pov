@@ -7,10 +7,10 @@ import { Link,useParams,useNavigate } from "react-router-dom";
 
 
 const trip = () => {
-  const [tripData,setTripData]=useState([])
-  const [pointData,setPointData]=useState([])
-  const param = useParams()
+
   const navigate=useNavigate()
+  const [tripData,setTripData]=useState([])
+  
   
  
   
@@ -24,23 +24,14 @@ const trip = () => {
       .catch((error) => console.log(error));
   };
 
-  const addNewTrip=()=>{
-    
-    axios
-    .post('http://localhost:3000/api/trip',{name : newTitle,desc : newDiscription,tag : newTag})
-    .then((result)=>{
-      
-      setNewTitle("")
-    setNewDiscription("")
-    setNewTag([])
-    })
-    .catch((error)=>console.log(error,'zzz'))
-  }
+
 
   const deleteTrip =(name)=>{
     axios
     .delete(`http://localhost:3000/api/trip/${name}`)
-    .then((result)=>setTripData(''))
+    .then((result)=>{
+      console.log(result,'hédhi li hachti beha')
+      getTrip()})
     .catch((error)=>console.log(error))
   }
 
@@ -52,7 +43,13 @@ const trip = () => {
       }, []);
 
 
-const columns = [{
+const columns = [
+{
+    title :"Image",
+    dataIndex:"imgUrl",
+    render: (imgUrl) => <img src={imgUrl} alt="img" style={{ width: '100px', height: '100px' }} />
+  },
+{
   title :"Title",
   dataIndex:"name",
 },
@@ -61,7 +58,7 @@ const columns = [{
   dataIndex:"desc",
 },
 {
-  title :"Tag",
+  title :"Tags",
   dataIndex:"tag",
   render: (tag) => (
       <>
@@ -89,7 +86,7 @@ const columns = [{
          <EyeOutlined onClick={()=>{ navigate(`/point/${record.name}`)}}/>
           
           
-        <Link to='/addTrip'><EditOutlined /></Link>
+        <Link to={'/addTrip/'+record.name}><EditOutlined /></Link>
           
           
         

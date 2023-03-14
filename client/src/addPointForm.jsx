@@ -1,69 +1,103 @@
 
 import axios from 'axios';
 import React from 'react'
-import { useState } from 'react';
-import { Input,Button } from "antd";
+import { useState,useEffect } from 'react';
+import { Input,Button,Select } from "antd";
 import { Link } from 'react-router-dom';
 import { useParams} from 'react-router';
 
 
+
 const addTripForm = () => {
   const param = useParams()
+
+  useEffect(() => {getTrip()}, []);
   
+  const [imageUpload, setImageUpload] = useState('');
+  const [tripData,setTripData]=useState([])
   const [newTitle,setNewTitle]=useState('')
   const [newDiscription,setNewDiscription]=useState('')
   const [newTag,setNewTag]=useState([])
+  const [newlatitude,setLatitude]=useState('')
+  const [newlongitude,setLongitude]=useState('')
+  const [selectedTrip,setSelectedTrip]=useState('')
     
+  const uploadImg = async () => {
+    const formData = new FormData();
+    formData.append('file', imageUpload);
+    formData.append('upload_preset', 'gmysyjod');
+    
+    const response = await axios.post('https://api.cloudinary.com/v1_1/dk2x78b4b/image/upload', formData);
+    console.log(response);
+    console.log(response.data.secure_url);
+    return response.data.secure_url;
+  };
+
+  const getTrip = () => {
+    axios
+      .get("http://localhost:3000/api/trip/")
+      .then((result) => {
+        setTripData(result.data);
+        
+      })
+      .catch((error) => console.log(error));
+  };
         
   const addNewPoint=()=>{
-    console.log({name : newTitle,desc : newDiscription,tag : newTag})
+    uploadImg(imageUpload).then((imageUrl) => {
     axios
-    .post('http://localhost:3000/api/trip',{name : newTitle,desc : newDiscription,tag : newTag})
+    .post('http://localhost:3000/api/point',{name : newTitle,desc : newDiscription,tag : newTag,latitude:newlatitude,longitude:newlongitude,trip:selectedTrip,imgUrl: imageUrl})
     .then((result)=>{
-      
-      setNewTitle("")
+    
+    setSelectedTrip("")
+    setNewTitle("")
     setNewDiscription("")
     setNewTag([])
+    setLatitude("")
+    setLongitude("")
+    setImageUpload("")
     })
     .catch((error)=>console.log(error,'zzz'))
-  }
+  })}
+  
 
   const updatePoint=()=>{
-    axios.patch(`http://localhost:3000/api/point/${param.name}`,{name:newTitle,desc:newDiscription,tag:newTag})
+    uploadImg(imageUpload).then((imageUrl) => {
+    axios.patch(`http://localhost:3000/api/point/${trip}/${id}`,{name:newTitle,desc:newDiscription,tag:newTag,latitude:newlatitude,longitude:newlongitude,imgUrl: imageUrl})
     .then((result)=>{
-      console.log(result)
+      
       setNewTitle('')
       setNewDiscription('')
       setNewTag([])
+      setLatitude("")
+      setLongitude("")
+      setImageUpload("")
     })
     .catch((error)=>console.log(error))
-  }
+  })}
 
-      // function UploadImg() {
-        // const [imageUpload, setimageUpload] = useState("");
-        // const UploadImg = () => {
-        //   const formData = new FormData();
-        //   formData.append("file", imageUpload);
-        //   formData.append("upload_preset", "djqjuoks");
-        //   axios
-        //     .post("https://api.cloudinary.com/v1_1/dk2x78b4b/image/upload", formData)
-        //     .then((response) => {
-        //       console.log(response);
-        //       console.log(response.data.secure_url);
-        //       let imgurl = response.data.secure_url;
-        //       console.log("img for the Trip", imgurl);
-            //   axios
-            //     .put(`http://localhost:3000/api/user/updateUser/31`, {
-            //       profile: imgurl,
-            //     })
-            //     .then((response) => {
-            //       console.log(response);
-            //     });
-        //     });
-        // }}
+     
   return (
     <div>
        <form className="forms">
+       <Select
+          className="select"
+          onChange={(value) => setSelectedTrip(value)}
+          placeholder="Select Trip"
+          value={selectedTrip}
+        >
+          {tripData.map((element) => (
+            <Select.Option key={element.name} value={element.name}>
+              {element.name}
+            </Select.Option>
+          ))}
+        </Select>
+        <input
+        type="file"
+        onChange={(e) => {
+          setImageUpload(e.target.files[0]);
+        }}
+      />
         <Input
           className="site-form-item-icon"
           onChange={(event) => setNewTitle(event.target.value)}
@@ -82,7 +116,7 @@ const addTripForm = () => {
           onChange={(event) => setNewTag(event.target.value)}
           
           
-          placeholder="Discription"
+          placeholder="Tags"
         />
         {/* <Input
         className='input-file'
@@ -91,15 +125,7 @@ const addTripForm = () => {
           setimageUpload(e.target.files[0]);
         }}
       /> */}
-<Link to='/trip'>
-  <Button className='plus' 
-  onClick={()=>{
-  
-    param && param.name ? addNewPoint : updatePoint
-    console.log(param.name)}}>
-    {param && param.name ? "Submit" : 'Update'}
-    </Button>
-    </Link>
+
         {/* <Button
           onClick={() => myClick(addNewTrip)}
           type="primary"
@@ -108,7 +134,33 @@ const addTripForm = () => {
         >
           Submit
         </Button> */}
-      
+      <Input
+          className="site-form-item-icon"
+          onChange={(event) => setLatitude(event.target.value)}
+          
+          
+          placeholder="Latitude"
+        />
+        <Input
+          className="site-form-item-icon"
+          onChange={(event) => setLongitude(event.target.value)}
+          
+          
+          placeholder="Longitude"
+        />
+        <Link to='/trip'>
+  <Button className='plus' 
+  onClick={()=>{
+  
+    if (param && param.name) {
+      updatePoint();
+    } else {
+      addNewPoint();
+    } 
+    }}>
+    {param && param.name ? "Update" : 'Submit'}
+    </Button>
+    </Link>
       </form>
     </div>
   )

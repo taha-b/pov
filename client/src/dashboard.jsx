@@ -1,24 +1,24 @@
 
 import { LogoutOutlined, PlusOutlined, HeartOutlined, ShareAltOutlined} from '@ant-design/icons';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import React from "react";
 
 
 const Dashboard = () => {
-
+const navigate=useNavigate()
     
 
   return (
     <div >
       <div className="navbar">
-        <a href="#" >
+        <a >
           <LogoutOutlined style={{ marginRight: '10px' }} />
           Log Out
         </a>
-        <Link to='/addTrip'><a>
+        <a onClick={()=>navigate("/addTrip")}>
           <PlusOutlined style={{ marginRight: '10px' }} />
           Add New POV
-        </a></Link>
+        </a>
         <a href="#" >
           <HeartOutlined style={{ marginRight: '10px' }} />
           Favorite

@@ -2,22 +2,21 @@ import {useState,useEffect} from 'react';
 import { Table,Tag } from "antd";
 import {  EyeOutlined ,DeleteOutlined,EditOutlined }from "@ant-design/icons";
 import axios from 'axios';
-import { Link,useLocation } from "react-router-dom";
+import { Link,useParams } from "react-router-dom";
 
 
 
-const trip = () => {
+const point = () => {
   const [pointData,setPointData]=useState([])
 
-  const location = useLocation()
-  console.log(location?.pathname.slice(7),"aze")
-  const getpoints = (param) => {
+  const {trip} = useParams()
+  console.log(trip)
+  const getpoints = () => {
     axios
-      .get(`http://localhost:3000/api/point/${location?.pathname.slice(7)}`)
+      .get(`http://localhost:3000/api/point/${trip}`)
       .then((result) => {
         
        
-        console.log(result.data)
         setPointData(result.data);
         
       })
@@ -30,35 +29,25 @@ const trip = () => {
   
   
 
-  // const addNewPoint=()=>{
-    
-  //   axios
-  //   .post('http://localhost:3000/api/point',{name : newTitle,desc : newDiscription,tag : newTag})
-  //   .then((result)=>{
-      
-  //     setNewTitle("")
-  //   setNewDiscription("")
-  //   setNewTag([])
-  //   })
-  //   .catch((error)=>console.log(error,'zzz'))
-  // }
-
-  // const deleteTrip =(name)=>{
-  //   axios
-  //   .delete(`http://localhost:3000/api/trip/${name}`)
-  //   .then((result)=>console.log(result))
-  //   .catch((error)=>console.log(error))
-  // }
+  
+  const deleteTrip =(id)=>{
+    axios
+    .delete(`http://localhost:3000/api/point/${trip}/${id}`)
+    .then((result)=> getpoints())
+    .catch((error)=>console.log(error))
+  }
 
   
  
-  //   useEffect(() => {
-        
-  //       getTrip();
-  //     }, []);
+  
 
-
-const columns = [{
+const columns = [
+  {
+    title :"Image",
+    dataIndex:"imgUrl",
+    render: (imgUrl) => <img src={imgUrl} alt="img" style={{ width: '100px', height: '100px' }} />
+  },
+  {
   title :"Title",
   dataIndex:"name",
 },
@@ -101,7 +90,7 @@ const columns = [{
           
           
         
-    {/* <DeleteOutlined onClick={()=>deleteTrip(record.name)}/> */}
+    <DeleteOutlined onClick={()=>deleteTrip(record.id)}/> 
       
       </>
      
@@ -111,10 +100,11 @@ const columns = [{
   return (
   
       <div className='table'>
-      <Table dataSource={pointData} columns={columns} />
+        <Link to={'/pointForm'}><button>addone</button></Link>
+        <Table dataSource={pointData.length > 0 ? pointData : []} columns={columns} />
       </div>
   
   )
 }
 
-export default trip
+export default point
