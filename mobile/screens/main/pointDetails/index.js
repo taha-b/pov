@@ -1,15 +1,40 @@
-import { View, Image, ScrollView, Pressable } from 'react-native'
-import { useEffect, useState } from 'react';
+import { View, Image, ScrollView, Pressable, Animated, TouchableWithoutFeedback, Dimensions } from 'react-native'
+import { useEffect, useState, useRef } from 'react';
 import { Text } from '@ui-kitten/components';
 import Svg, { Path } from 'react-native-svg';
 import { LinearGradient } from 'expo-linear-gradient';
 import Map from "./map"
-
-
-
 export default function pointDetails({ route, navigation }) {
   const { setHeader, point } = route.params;
-  const [showMap, setShowMap] = useState(false)
+  const windowHeight = Dimensions.get("window").height + Dimensions.get("window").height * 0.07;
+
+
+  const firstSection = useRef(new Animated.Value(windowHeight * 0.45)).current;
+  const svgMargin = useRef(new Animated.Value(windowHeight * 0.4)).current;
+  const [isExpanded, setIsExpanded] = useState(false);
+
+
+
+
+  const handleSelect = () => {
+    {
+      const toValue = isExpanded ? windowHeight * 0.45 : windowHeight * 0.7;
+      Animated.timing(firstSection, {
+        toValue,
+        duration: 500,
+        useNativeDriver: false,
+      }).start();
+    } {
+      const toValue = isExpanded ? windowHeight * 0.4 : windowHeight * 0.65;
+      Animated.timing(svgMargin, {
+        toValue,
+        duration: 500,
+        useNativeDriver: false,
+      }).start();
+    }
+    setIsExpanded(!isExpanded);
+  };
+
   const uiColors = {
     bg: "#242424",
     primary: "#dcd1c5",
@@ -24,13 +49,13 @@ export default function pointDetails({ route, navigation }) {
   }, []);
 
   return (
-    <View style={{ height: "100%" }}>
-      <View style={{
-        height: showMap ? "68.5%" : "45%",
+    <View style={{ height: windowHeight }}>
+      <Animated.View style={{
+        height: firstSection,
         backgroundColor: "gray",
       }} >
 
-        {showMap ? <Map point={point} /> :
+        {isExpanded ? <Map point={point} /> :
           <Image
             source={{ uri: point.imgUrl }}
             style={{
@@ -41,22 +66,20 @@ export default function pointDetails({ route, navigation }) {
               borderRadius: 1,
             }}
             resizeMode="contain" />}
-
-
-
-        <Svg
-          style={{
-            width: "100%", marginTop: showMap ? "68.5%" : "45%", height: "100%", zIndex: 1
-
-          }}
-          viewBox="0 0 1440 320"
-        >
-          <Path
-            d="M0,32L120,53.3C240,75,480,117,720,117.3C960,117,1200,75,1320,53.3L1440,32L1440,320L1320,320C1200,320,960,320,720,320C480,320,240,320,120,320L0,320Z"
-            fill={uiColors.bg} />
-        </Svg>
-      </View>
-      <View style={{ height: showMap ? "31.5%" : "55%", backgroundColor: uiColors.bg, }}>
+        <Animated.View style={{ zIndex: 5, marginTop: svgMargin, width: "100%", height: 92 }}>
+          <Svg
+            style={{
+              width: "100%", height: "100%", zIndex: 5
+            }}
+            viewBox="0 0 1440 320"
+          >
+            <Path
+              d="M0,32L120,53.3C240,75,480,117,720,117.3C960,117,1200,75,1320,53.3L1440,32L1440,320L1320,320C1200,320,960,320,720,320C480,320,240,320,120,320L0,320Z"
+              fill={uiColors.bg} />
+          </Svg>
+        </Animated.View>
+      </Animated.View>
+      <View style={{ height:  "55%", backgroundColor: uiColors.bg, }}>
         <View style={{
           width: "90%",
           marginLeft: "5%",
@@ -91,7 +114,7 @@ export default function pointDetails({ route, navigation }) {
 
 
 
-        {showMap || <View style={{ marginTop: "15%", width: "90%", marginLeft: "5%", height: "30%" }}>
+        {isExpanded || <View style={{ marginTop: "15%", width: "90%", marginLeft: "5%", height: "30%" }}>
           <LinearGradient
             colors={['transparent', uiColors.bg]}
             style={{
@@ -132,19 +155,24 @@ export default function pointDetails({ route, navigation }) {
           justifyContent: 'center',
           marginTop: "8%"
         }}>
-          <Pressable onPress={() => setShowMap(!showMap)} style={{
+          <View onPress={() => setisExpanded(!isExpanded)} style={{
             width: "50%",
             height: 60,
             backgroundColor: uiColors.secondary,
-            borderRadius: 12, justifyContent: "center"
+            borderRadius: 12
           }}>
-            <Text style={{
-              color: uiColors.bg,
-              fontSize: 20,
-              textAlign: "center",
-            }} category='h1'>SWITCH MAP</Text>
-
-          </Pressable>
+            <TouchableWithoutFeedback onPress={() => handleSelect()}>
+              <View style={{ flex: 1, justifyContent: "center" }}>
+                <Text style={{
+                  color: uiColors.bg,
+                  fontSize: 20,
+                  textAlign: "center",
+                }} category='h1'>
+                  SWITCH MAP
+                </Text>
+              </View>
+            </TouchableWithoutFeedback>
+          </View>
         </View>
 
 
