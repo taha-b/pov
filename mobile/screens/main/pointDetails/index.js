@@ -1,4 +1,4 @@
-import { View, Image, ScrollView, Pressable, Animated, TouchableWithoutFeedback, Dimensions } from 'react-native'
+import { View, Image, ScrollView, Pressable, Animated, TouchableWithoutFeedback, Dimensions, Linking } from 'react-native'
 import { useEffect, useState, useRef } from 'react';
 import { Text } from '@ui-kitten/components';
 import Svg, { Path } from 'react-native-svg';
@@ -79,7 +79,7 @@ export default function pointDetails({ route, navigation }) {
           </Svg>
         </Animated.View>
       </Animated.View>
-      <View style={{ height:  "55%", backgroundColor: uiColors.bg, }}>
+      <View style={{ height: "55%", backgroundColor: uiColors.bg, }}>
         <View style={{
           width: "90%",
           marginLeft: "5%",
@@ -150,30 +150,97 @@ export default function pointDetails({ route, navigation }) {
 
 
 
-        <View style={{
-          alignItems: 'center',
-          justifyContent: 'center',
-          marginTop: "8%"
-        }}>
-          <View onPress={() => setisExpanded(!isExpanded)} style={{
-            width: "50%",
-            height: 60,
-            backgroundColor: uiColors.secondary,
-            borderRadius: 12
+        {isExpanded ?
+          <View style={{
+            marginTop: "8%", width: "90%", marginLeft: "5%", display: "flex", flexDirection: "row"
           }}>
-            <TouchableWithoutFeedback onPress={() => handleSelect()}>
-              <View style={{ flex: 1, justifyContent: "center" }}>
-                <Text style={{
-                  color: uiColors.bg,
-                  fontSize: 20,
-                  textAlign: "center",
-                }} category='h1'>
-                  SWITCH MAP
-                </Text>
+            <View onPress={() => setisExpanded(!isExpanded)} style={{
+              width: "70%",
+              height: 50,
+              backgroundColor: uiColors.secondary,
+              borderRadius: 12
+            }}>
+              <TouchableWithoutFeedback onPress={() => handleSelect()}>
+                <View style={{ flex: 1, justifyContent: "center" }}>
+                  <Text style={{
+                    color: uiColors.bg,
+                    fontSize: 20,
+                    textAlign: "center",
+                  }} category='h1'>
+                    SHOW DETAILS...
+                  </Text>
+                </View>
+              </TouchableWithoutFeedback>
+            </View>
+
+            <View style={{ width: "30%", justifyContent: "center", alignItems: "center" }}>
+
+
+
+
+
+
+
+
+              <View onPress={() => setisExpanded(!isExpanded)} style={{
+                width: "33%",
+                height: 40,
+                backgroundColor: uiColors.primary,
+                borderRadius: 12
+              }}>
+                <TouchableWithoutFeedback onPress={() => {
+                  const url = `https://www.google.com/maps/dir/?api=1&destination=${point.position.latitude},${point.position.longitude}`;
+                  Linking.openURL(url);
+                }}>
+                  <View style={{ flex: 1, display: "flex", alignItems: 'center', justifyContent: 'center' }}>
+                    <Image style={{
+                      width: "70%",
+                      height: "70%",
+                      transform: [{ rotate: '90deg' }],
+                      marginLeft: 4,
+                      marginTop: -3
+                    }}
+                      source={{ uri: "https://cdn.discordapp.com/attachments/1073737355896299542/1085189954038141059/icons8-send-48_1.png" }}
+                    />
+                  </View>
+
+                </TouchableWithoutFeedback>
               </View>
-            </TouchableWithoutFeedback>
+
+
+
+
+
+
+
+
+            </View>
+
           </View>
-        </View>
+          :
+          <View style={{
+            alignItems: 'center',
+            marginTop: "8%"
+          }}>
+            <View onPress={() => setisExpanded(!isExpanded)} style={{
+              width: "50%",
+              height: 60,
+              backgroundColor: uiColors.secondary,
+              borderRadius: 12
+            }}>
+              <TouchableWithoutFeedback onPress={() => handleSelect()}>
+                <View style={{ flex: 1, justifyContent: "center" }}>
+                  <Text style={{
+                    color: uiColors.bg,
+                    fontSize: 20,
+                    textAlign: "center",
+                  }} category='h1'>
+                    SWITCH MAP
+                  </Text>
+                </View>
+              </TouchableWithoutFeedback>
+            </View>
+          </View>}
 
 
 
