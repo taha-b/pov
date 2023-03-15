@@ -14,6 +14,11 @@ export default function pointDetails({ route, navigation }) {
   const [isExpanded, setIsExpanded] = useState(false);
 
 
+  const uiColors = {
+    bg: "#242424",
+    primary: "#dcd1c5",
+    secondary: "#bd9555"
+  }
 
 
   const handleSelect = () => {
@@ -35,17 +40,12 @@ export default function pointDetails({ route, navigation }) {
     setIsExpanded(!isExpanded);
   };
 
-  const uiColors = {
-    bg: "#242424",
-    primary: "#dcd1c5",
-    secondary: "#bd9555"
-  }
   useEffect(() => {
     console.log(point, "aze")
-    setHeader(false);
-    return () => {
-      setHeader(true);
-    }
+    // setHeader(false);
+    // return () => {
+    //   setHeader(true);
+    // }
   }, []);
 
   return (
