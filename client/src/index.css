@@ -1,6 +1,6 @@
 @import 'leaflet/dist/leaflet.css';
 .leaflet-container {
-  width: 90%;
+  width: 100%;
   height: 100vh
   
 }
@@ -392,8 +392,10 @@ footer .logo{
 }
 
 .AddLongLat{
+  display: flex;
+  justify-content: space-evenly;
   position: fixed;
   bottom: 50px; 
-  left: 47%; 
+  left: 44%;
   z-index: 1000;
 }

@@ -87,7 +87,7 @@ const columns = [
          <EyeOutlined onClick={()=>{ navigate(`/point/${record.name}`)}}/>
           
           
-        <Link to={'/addTrip/'+record.name}><EditOutlined /></Link>
+        <Link to={'/map/'+record.name}><EditOutlined /></Link>
           
           
         

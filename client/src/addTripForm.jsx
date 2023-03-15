@@ -6,12 +6,13 @@ import {EnvironmentOutlined } from '@ant-design/icons'
 import { Input,Button,Upload } from "antd";
 import { Link } from 'react-router-dom';
 import { useParams,useLocation} from 'react-router';
-import geocoder from './geocoder.jsx';
+import Geocoder from './geocoder.jsx';
 
 
 const addTripForm = () => {
   const param = useParams()
   const location = useLocation()
+  console.log(location)
   const latLong = location.state.latLong
   
   const [imageUpload, setImageUpload] = useState('');
@@ -28,7 +29,7 @@ const addTripForm = () => {
     formData.append('upload_preset', 'gmysyjod');
     
     const response = await axios.post('https://api.cloudinary.com/v1_1/dk2x78b4b/image/upload', formData);
-    console.log(response);
+   
     console.log(response.data.secure_url);
     return response.data.secure_url;
   };
@@ -40,17 +41,20 @@ const addTripForm = () => {
         desc: newDiscription,
         tag: newTag,
         imgUrl: imageUrl,
-        // lat : latLong.lat,
-        // lng : latLong.lng
+        position:{
+          latitude : latLong.lat,
+          longitude : latLong.lng
 
+        }
       })
       .then((result) => {
+        console.log('ya weldi')
         setNewTitle('');
         setNewDiscription('');
         setNewTag([]);
         setImageUpload('');
-        setLat('');
-        setLng('')
+        // setLat('');
+        // setLng('')
         
       })
       .catch((error) => console.log(error));
@@ -61,13 +65,20 @@ const addTripForm = () => {
   const updateTrip=()=>{
     
     uploadImg(imageUpload).then((imageUrl) => {
-      axios.patch(`http://localhost:3000/api/trip/${param.name}`,{name:newTitle,desc:newDiscription,tag:newTag,imgUrl: imageUrl})
+      axios.patch(`http://localhost:3000/api/trip/${param.name}`,{name:newTitle,desc:newDiscription,tag:newTag,imgUrl: imageUrl,
+      position:{
+        latitude : latLong.lat,
+        longitude : latLong.lng
+
+      }})
     .then((result)=>{
       
       setNewTitle('')
       setNewDiscription('')
       setNewTag([])
-      setImageUpload('');
+      setImageUpload('')
+      
+      
     })
     .catch((error)=>console.log(error))
   })
@@ -99,7 +110,7 @@ const addTripForm = () => {
           onChange={(event) => setNewTag(event.target.value)}
           placeholder="Tags"
         />
-        <Link to={'/map'}><EnvironmentOutlined /></Link>
+        {/* <Link to={'/map'}><EnvironmentOutlined /></Link> */}
       
 <Link to='/trip'>
   <Button className='plus' 

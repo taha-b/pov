@@ -15,7 +15,7 @@ const navigate=useNavigate()
           <LogoutOutlined style={{ marginRight: '10px' }} />
           Log Out
         </a>
-        <a onClick={()=>navigate("/addTrip")}>
+        <a onClick={()=>navigate("/map")}>
           <PlusOutlined style={{ marginRight: '10px' }} />
           Add New POV
         </a>
