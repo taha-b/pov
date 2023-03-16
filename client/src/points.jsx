@@ -2,12 +2,13 @@ import {useState,useEffect} from 'react';
 import { Table,Tag } from "antd";
 import {  EyeOutlined ,DeleteOutlined,EditOutlined }from "@ant-design/icons";
 import axios from 'axios';
-import { Link,useParams } from "react-router-dom";
+import { Link,useParams,useNavigate } from "react-router-dom";
 
 
 
 const point = () => {
   const [pointData,setPointData]=useState([])
+  const navigate=useNavigate()
 
   const {trip} = useParams()
   console.log(trip)
@@ -86,7 +87,7 @@ const columns = [
           }}/>
           
           
-        <Link to='/addTrip'><EditOutlined /></Link>
+        <EditOutlined onClick={()=>navigate(`/map/${record.trip}/${record.id}`)}/>
           
           
         
@@ -100,7 +101,7 @@ const columns = [
   return (
   
       <div className='table'>
-        <Link to={'/pointForm'}><button>addone</button></Link>
+        <Link to={'/map'}><button>addone</button></Link>
         <Table dataSource={pointData.length > 0 ? pointData : []} columns={columns} />
       </div>
   

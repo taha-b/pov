@@ -18,8 +18,9 @@ const trip = () => {
     axios
       .get("http://localhost:3000/api/trip/")
       .then((result) => {
-        setTripData(result.data);
         
+        setTripData(result.data);
+        console.log(result.data)
       })
       .catch((error) => console.log(error));
   };
@@ -86,7 +87,7 @@ const columns = [
          <EyeOutlined onClick={()=>{ navigate(`/point/${record.name}`)}}/>
           
           
-        <Link to={'/addTrip/'+record.name}><EditOutlined /></Link>
+        <Link to={'/map/'+record.name}><EditOutlined /></Link>
           
           
         
