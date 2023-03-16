@@ -45,6 +45,14 @@ const router = createHashRouter([
   },
  
   {
+    path: "/point/:trip/:id" ,
+    element: <Points />,
+  },
+  {
+    path: "/pointForm/:trip/:id" ,
+    element: <AddPointForm />,
+  },
+  {
     path: "/point/:trip" ,
     element: <Points />,
   },
@@ -56,8 +64,14 @@ const router = createHashRouter([
     path: "/map",
     element: <Map />,
   },
-  
-  
+  {
+    path: "/map/:name",
+    element: <Map />,
+  },
+  {
+    path: "/map/:trip/:id",
+    element: <Map />,
+  },
 ]);
 
 ReactDOM.render(
