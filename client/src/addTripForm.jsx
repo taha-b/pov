@@ -2,11 +2,11 @@
 import axios from 'axios';
 import React from 'react'
 import { useState } from 'react';
-import {EnvironmentOutlined } from '@ant-design/icons'
-import { Input,Button,Upload } from "antd";
+
+import { Input,Button,Select } from "antd";
 import { Link } from 'react-router-dom';
 import { useParams,useLocation} from 'react-router';
-import Geocoder from './geocoder.jsx';
+
 
 
 const addTripForm = () => {
@@ -15,14 +15,17 @@ const addTripForm = () => {
   console.log(location)
   const latLong = location.state.latLong
   
+  
   const [imageUpload, setImageUpload] = useState('');
   const [newTitle,setNewTitle]=useState('')
   const [newDiscription,setNewDiscription]=useState('')
   const [newTag,setNewTag]=useState([])
-  const [lat,setLat]=useState('')
-  const [lng,setLng]=useState('')
+  
     
-        
+  const handleTag = (value) => {
+    setNewTag(value);
+  };
+
   const uploadImg = async () => {
     const formData = new FormData();
     formData.append('file', imageUpload);
@@ -53,8 +56,6 @@ const addTripForm = () => {
         setNewDiscription('');
         setNewTag([]);
         setImageUpload('');
-        // setLat('');
-        // setLng('')
         
       })
       .catch((error) => console.log(error));
@@ -105,13 +106,16 @@ const addTripForm = () => {
           onChange={(event) => setNewDiscription(event.target.value)}
           placeholder="Discription"
         />
-        <Input
-          className="site-form-item-icon"
-          onChange={(event) => setNewTag(event.target.value)}
-          placeholder="Tags"
-        />
-        {/* <Link to={'/map'}><EnvironmentOutlined /></Link> */}
-      
+        <Select
+        mode="tags"
+        style={{ width: '100%' }}
+        placeholder="Tags"
+        onChange={handleTag}
+        
+        
+      /> 
+
+   
 <Link to='/trip'>
   <Button className='plus' 
   onClick={

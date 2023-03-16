@@ -5,7 +5,7 @@ import { useState,useEffect } from 'react';
 import { Input,Button,Select } from "antd";
 import { Link } from 'react-router-dom';
 import { useParams,useLocation} from 'react-router';
-import Geocoder from './geocoder';
+
 
 
 
@@ -16,14 +16,16 @@ const addTripForm = () => {
   const latLong = location.state.latLong
 
   useEffect(() => {getTrip()}, []);
+
+  const handleTag = (value) => {
+    setNewTag(value);
+  };
   
   const [imageUpload, setImageUpload] = useState('');
   const [tripData,setTripData]=useState([])
   const [newTitle,setNewTitle]=useState('')
   const [newDiscription,setNewDiscription]=useState('')
   const [newTag,setNewTag]=useState([])
-  const [newlatitude,setLatitude]=useState('')
-  const [newlongitude,setLongitude]=useState('')
   const [selectedTrip,setSelectedTrip]=useState('')
     
   const uploadImg = async () => {
@@ -63,8 +65,6 @@ const addTripForm = () => {
     setNewTitle("")
     setNewDiscription("")
     setNewTag([])
-    // setLatitude("")
-    // setLongitude("")
     setImageUpload("")
     })
     .catch((error)=>console.log(error,'zzz'))
@@ -124,11 +124,14 @@ const addTripForm = () => {
           onChange={(event) => setNewDiscription(event.target.value)}
           placeholder="Description"
         />
-        <Input
-          className="site-form-item-icon"
-          onChange={(event) => setNewTag(event.target.value)}
-          placeholder="Tags"
-        />
+        <Select
+        mode="tags"
+        style={{ width: '100%' }}
+        placeholder="Tags"
+        onChange={handleTag}
+        
+        
+      /> 
         <Link to="/trip">
           <Button
             className="plus"

@@ -63,18 +63,17 @@ const columns = [
   dataIndex:"tag",
   render: (tag) => (
       <>
-        {tag?.map((element, i) => {
-          
-          let color = "";
-          if (i === 0) {
-            color = "yellow";
-          } else if (i === 1) {
-            color = "orange";
-          } else if (i === 2) {
-            color = "red";
-          }
-          return <Tag color={color} key={element}>{element}</Tag>;
-        })}
+       {(tag ?? []).map((element, i) => {
+        let color = "";
+        if (i === 0) {
+          color = "yellow";
+        } else if (i === 1) {
+          color = "orange";
+        } else if (i === 2) {
+          color = "red";
+        }
+        return <Tag color={color} key={element}>{element}</Tag>;
+      })}
       </>
     ),
 },

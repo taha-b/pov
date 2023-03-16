@@ -2,6 +2,7 @@
 import { LogoutOutlined, PlusOutlined, HeartOutlined, ShareAltOutlined} from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import React from "react";
+import Trip from "./trip.jsx"
 
 
 const Dashboard = () => {
@@ -29,6 +30,7 @@ const navigate=useNavigate()
         </a>
       </div>
      
+      <Trip/>
       
       
       
