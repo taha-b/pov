@@ -1,6 +1,7 @@
 import React from 'react'
 import { GoogleAuth } from './config/firebase'
-import {Button} from 'antd'
+import {Button,Input} from 'antd'
+
 import "./index.css"
 
 
@@ -28,8 +29,8 @@ function App() {
         <div>
         <h1>Looking to explore new destinations<br/>and plan your next adventure?<br/>
       Look no further than our app!</h1>
-      <img className='android' src='../public/img/android.jpg'/>
-      <img className='ios' src='../public/img/ios.png'/>
+      <img className='android' src='../public/img/download.png'/>
+      
       </div>
       
       <img src="../public/img/map.png" className='map'/>
@@ -51,11 +52,13 @@ function App() {
       
         
         <div className='right'>
-        <img src="../public/img/Join-us.png"  className='join'/>
-        <div>
-        <h2>We're obsessed with growth.</h2>
-        
-        <Button type='primary' >Sign up for free</Button>
+        <img src="../public/img/sign-up.png"  className='join'/>
+        <div className='input'>
+        <Input className='Sign' placeholder='Full Name'></Input>
+        <Input className='Sign' placeholder='Adress Mail'></Input>
+        <Input className='Sign' placeholder='Passeword'></Input>
+        <Input className='Sign' placeholder='Check Passeword'></Input>
+        <Button type='primary' className='Sign'>Sign up for free</Button>
         
         </div>
         </div>
