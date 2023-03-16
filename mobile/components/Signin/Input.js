@@ -1,11 +1,11 @@
-import { View, TextInput, Text } from "react-native";
+import { View, TextInput, Text, Keyboard } from "react-native";
 import Svg, { Path } from "react-native-svg";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 
-export default function Input({ value, setValue, svg, position, name, setFocus }) {
+export default function Input({ value, setValue, svg, position, name, setFocus, focus }) {
     const isPassword = name === "Password" || name === "Confirm Password"
-
+   
     const [hide, setHide] = useState(isPassword)
     return (
         <View >
@@ -17,20 +17,27 @@ export default function Input({ value, setValue, svg, position, name, setFocus }
                 zIndex: 1,
                 backgroundColor: "white",
                 fontSize: 18,
-                color: "#181d3d"
+                color: "#181d3d",
+                backgroundColor: "white"
             }}>{name}</Text>
 
             <TextInput
-                keyboardType={isPassword ? "email-address" : "default"}
-                inputMode={ "email"}
+                keyboardType={isPassword ? "default" : "email-address"}
+                // inputMode={"email"}
                 onFocus={() => {
-                    if (setFocus !== undefined) {
-                        setFocus(1)
+                    if (focus === 1) {
+                        setFocus(2)
+                    }
+                    else if (focus === 3) {
+                        setFocus(4)
                     }
                 }}
                 onBlur={() => {
-                    if (setFocus !== undefined) {
-                        setFocus(0)
+                    if (focus === 2) {
+                        setFocus(1)
+                    }
+                    else if (focus === 4) {
+                        setFocus(3)
                     }
                 }}
                 secureTextEntry={hide}

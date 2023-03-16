@@ -1,7 +1,7 @@
 import { View, TouchableWithoutFeedback, Keyboard, Text, Pressable, Image } from 'react-native';
 import { useState, useEffect } from 'react';
-import { getTrips } from '../../functions/points';
-import { signup } from '../../functions/signin';
+import { getTrips } from '../../../functions/points';
+import { signup } from '../../../functions/signin';
 
 import Lottie from 'lottie-react-native';
 export default function Index({ setUser }) {
@@ -15,7 +15,7 @@ export default function Index({ setUser }) {
                     height: '55%',
                     borderBottomRightRadius: 100
                 }} >
-                    <Lottie source={require('../../assets/animation/landing.json')}
+                    <Lottie source={require('../../../assets/animation/landing.json')}
                         autoPlay loop />
 
                 </View>
@@ -43,7 +43,6 @@ export default function Index({ setUser }) {
                     <View style={{ alignSelf: 'center' }}>
                         <Pressable
                             onPress={() => {
-                                navigation.navigate("Login")
                                 signup(setUser)
                             }}
                             style={{
