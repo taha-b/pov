@@ -138,6 +138,7 @@ nav a:hover, nav button:hover {
 
 .title{
     margin-bottom: 50px;
+    color: #1890ff;
     
 }
 
@@ -153,10 +154,36 @@ nav a:hover, nav button:hover {
 }
 
 .join{
-    width: 220px;
-    height: 220px;
+    width: 350px;
+    height: 330px;
+    
     border-radius: 20%;
    
+}
+.input{
+  display: block !important;
+  margin-right: 120px;
+  margin-left: 300px;
+  width: 300px;
+    padding: 30px 20px;
+    margin: 20px 20px 40px;
+    align-items: center;
+    background-color: none;
+    border-radius: 5px;
+    border: 1px solid rgba(0,0,0,.18);
+    /* box-shadow: 0 2px 4px rgba(0,0,255,.5); Updated */
+    transition: transform .1s ease-in-out, box-shadow .1s, transform .2s ease-in-out
+}
+.input Input {
+  margin-top: 20px;
+}
+.input Button {
+  margin-top: 20px;
+}
+
+.Sign{
+  width: 300px;
+  height: 35px;
 }
 
 .form-img{
@@ -222,16 +249,14 @@ nav a:hover, nav button:hover {
   }
   
 .android{
-    width: 120px;
-    height: 50px;
+    width: 200px;
+    height: 200px;
+    padding: 0px;
     margin-top: 50px;
     margin-left: 80px;
+    color: white;
 }
-.ios{
-    width: 120px;
-    height: 44px;
-    margin-left: 30px;
-}
+
 
 nav .logo {
     margin-right: auto;
