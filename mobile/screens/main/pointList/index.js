@@ -13,10 +13,10 @@ export default Points = ({ route, navigation }) => {
   useEffect(() => {
     getPoints(trip.name, setPoints)
 
-    setHeader(true)
-    return () => {
-      setHeader(true);
-    }
+    // setHeader(true)
+    // return () => {
+    //   setHeader(true);
+    // }
   }, [])
 
   const navigate = (item) => {

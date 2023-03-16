@@ -1,4 +1,4 @@
-const { doc, getDocs, collection, query, where, setDoc, updateDoc, addDoc, deleteDoc, collectionGroup } = require("firebase/firestore");
+const { getDoc, doc, getDocs, collection, query, where, setDoc, updateDoc, addDoc, deleteDoc, collectionGroup } = require("firebase/firestore");
 const { db } = require("../firebase/config")
 
 
@@ -56,26 +56,34 @@ exports.updateTrip = function (req, res) {
         res.send("you cannot update the size of a trip manually")
     }
     else if (req.body.name) {
-        const updatedName = req.body.name[0].toUpperCase() + req.body.name.slice(1)
-        getDocs(query(collectionGroup(db, name))).then((snap) => {
-            if (snap.size) {
-                const promises = snap.docs.map((subDoc) => {
-                    let newSubDoc = subDoc.data()
-                    newSubDoc.trip = updatedName
-                    return setDoc(doc(db, "points", updatedName, updatedName, subDoc.id), newSubDoc)
-                });
-                Promise.all(promises).then(() => {
-                    setDoc(doc(db, "points", updatedName), { ...req.body, size: promises.length })
-                        .then(() => { deleteTrip({ params: { name } }); res.send("UPDATED") })
+        getDoc(docRef).then((document) => {
+            if (document.exists()) {
+                let data = { ...document.data(), ...req.body }
+                const updatedName = req.body.name[0].toUpperCase() + req.body.name.slice(1)
+                getDocs(query(collectionGroup(db, name))).then((snap) => {
+                    if (snap.size) {
+                        const promises = snap.docs.map((subDoc) => {
+                            let newSubDoc = subDoc.data()
+                            newSubDoc.trip = updatedName
+                            return setDoc(doc(db, "points", updatedName, updatedName, subDoc.id), newSubDoc)
+                        });
+                        data.size = promises.length
+                        Promise.all(promises).then(() => {
+                            setDoc(doc(db, "points", updatedName), data)
+                                .then(() => { deleteTrip({ params: { name } }); res.send("UPDATED") })
+                        });
+                    } else {
 
-
+                        setDoc(doc(db, "points", updatedName), data)
+                            .then(() => { deleteTrip({ params: { name } }); res.send("UPDATED") }).catch(err => res.send(err))
+                    }
                 });
+
             } else {
-                updateDoc(docRef, req.body).then((e) => {
-                    res.send(req.body)
-                }).catch(err => res.send(err))
+                res.send("Trip not found")
             }
-        });
+        })
+
     } else {
         updateDoc(docRef, req.body).then((e) => {
             res.send(req.body)
