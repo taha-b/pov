@@ -1,12 +1,18 @@
 
-import { LogoutOutlined, PlusOutlined, HeartOutlined, ShareAltOutlined} from '@ant-design/icons';
-import { useNavigate } from 'react-router-dom';
-import React from "react";
-import Trip from "./trip.jsx"
+import { LogoutOutlined, PlusOutlined, UserOutlined} from '@ant-design/icons';
+import { useNavigate,useLocation } from 'react-router-dom';
+
+
+
 
 
 const Dashboard = () => {
 const navigate=useNavigate()
+
+
+
+
+
     
 
   return (
@@ -18,22 +24,19 @@ const navigate=useNavigate()
         </a>
         <a onClick={()=>navigate("/map")}>
           <PlusOutlined style={{ marginRight: '10px' }} />
-          Add New POV
+          Add New Trip
+        </a>
+        <a onClick={()=>navigate("/map")}>
+          <PlusOutlined style={{ marginRight: '10px' }} />
+          Add New Point
         </a>
         <a href="#" >
-          <HeartOutlined style={{ marginRight: '10px' }} />
-          Favorite
+          <UserOutlined  style={{ marginRight: '10px' }} />
+          Users
         </a>
-        <a href="#" >
-          <ShareAltOutlined style={{ marginRight: '10px' }} />
-          Share
-        </a>
+       
       </div>
-     
-      <Trip/>
-      
-      
-      
+   
     </div>
     
   );

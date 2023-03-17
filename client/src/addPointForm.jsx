@@ -2,7 +2,7 @@
 import axios from 'axios';
 import React from 'react'
 import { useState,useEffect } from 'react';
-import { Input,Button,Select } from "antd";
+import { Input,Button,Select,Space } from "antd";
 import { Link } from 'react-router-dom';
 import { useParams,useLocation} from 'react-router';
 
@@ -92,14 +92,16 @@ const addTripForm = () => {
 
      
   return (
-    <div>
+    
       <form className="forms">
+      <Space direction="vertical">
         {!param || !param.trip || !param.id ? (
           <Select
             className="select"
             onChange={(value) => setSelectedTrip(value)}
             placeholder="Select Trip"
             value={selectedTrip}
+            style={{width:"100%"}}
           >
             {tripData.map((element) => (
               <Select.Option key={element.name} value={element.name}>
@@ -108,7 +110,8 @@ const addTripForm = () => {
             ))}
           </Select>
         ) : null}
-        <input
+        <Input
+       
           type="file"
           onChange={(e) => {
             setImageUpload(e.target.files[0]);
@@ -146,8 +149,9 @@ const addTripForm = () => {
             {param && param.trip && param.id ? "Update" : "Submit"}
           </Button>
         </Link>
+        </Space>
       </form>
-    </div>
+   
   );
   
 }

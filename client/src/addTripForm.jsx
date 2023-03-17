@@ -3,7 +3,7 @@ import axios from 'axios';
 import React from 'react'
 import { useState } from 'react';
 
-import { Input,Button,Select } from "antd";
+import { Input,Button,Select,Space } from "antd";
 import { Link } from 'react-router-dom';
 import { useParams,useLocation} from 'react-router';
 
@@ -88,8 +88,9 @@ const addTripForm = () => {
 
   
   return (
-    <div>
+   
        <form className="forms">
+        <Space direction="vertical">
        <input
         type="file"
         onChange={(e) => {
@@ -125,8 +126,9 @@ const addTripForm = () => {
     {param && param.name ? 'Update': "Submit"  }
     </Button>
     </Link>
+    </Space>
        </form>
-    </div>
+  
   )
 }
 export default addTripForm;
