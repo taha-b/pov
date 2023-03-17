@@ -1,42 +1,50 @@
-import { View, Image, Pressable } from 'react-native'
-import { useEffect, useState } from 'react';
-import MapView from './map'
+import { View, Image, Pressable, Dimensions, ScrollView, Animated } from 'react-native'
+import { useEffect, useState, useRef } from 'react';
 import ListView from './listView'
-import { getTrips } from "../../../functions/points"
-import { Divider } from '@ui-kitten/components';
+import { getTrips } from "../../../functions/trips"
+import { Divider, Text } from '@ui-kitten/components';
 
 export default function index({ navigation, setHeader }) {
     const [trips, setTrips] = useState([])
-    const [view, setView] = useState(0)
-    useEffect(() => {
-        getTrips(setTrips)
+    const windowHeight = Dimensions.get("window").height + Dimensions.get("window").height * 0.07;
 
-        setHeader(true)
+
+    useEffect(() => {
+        getTrips(setTrips, windowHeight, Animated)
+
+        setHeader(false)
 
     }, [])
 
 
     return (
-        <View style={{ flex: 1 }}>
+        <View>
             <View style={{
-                width: "100%", height: 50, backgroundColor: "gray",
-                position: "absolute", zIndex: 1, bottom: 0, display: "flex", flexDirection: "row"
+                width: "100%", height: windowHeight,
+                backgroundColor: "black",
+                // marginLeft:"70%"
             }}>
-                <Pressable onPress={() => setView(1)}
-                    style={{ width: "50%", backgroundColor: "red", justifyContent: "center", alignItems: "center" }}>
-                    <Image source={{ uri: "https://cdn.discordapp.com/attachments/1073737355896299542/1083797693668790272/location.png" }}
-                        style={{ width: 33, height: 33 }} />
-                </Pressable>
-                <Pressable onPress={() => setView(0)}
-                    style={{ width: "50%", backgroundColor: "green", justifyContent: "center", alignItems: "center" }}>
-                    <Image source={{ uri: "https://cdn.discordapp.com/attachments/1073737355896299542/1083797693928841295/list.png" }}
-                        style={{ width: 33, height: 33 }} />
-                </Pressable>
-            </View>
-
-
-
-            {view ? <MapView trips={trips} /> : <ListView navigation={navigation} setHeader={setHeader} trips={trips} />}
+                <Image style={{
+                    width: 50,
+                    height: 50,
+                    zIndex: 1,
+                    position: "absolute",
+                    top: 38,
+                    left: 10
+                }}
+                    source={{ uri: "https://cdn.discordapp.com/attachments/1073737355896299542/1086054768507621496/CITYPNG.COMWhite_User_Member_Guest_Icon_PNG_Image_-_4000x4000.png" }} />
+                <Image style={{
+                    width: 35,
+                    height: 35,
+                    zIndex: 1,
+                    position: "absolute",
+                    top: 50,
+                    right: 30
+                }}
+                    source={{ uri: "https://cdn.discordapp.com/attachments/1073737355896299542/1086054768310485102/magnifying-glass-search-white-icon-transparent-png-11640439066z98pnu1jta-removebg-preview.png" }} />
+                <ListView windowHeight={windowHeight} trips={trips} />
+            </View >
         </View>
-    )
+    );
+
 }
