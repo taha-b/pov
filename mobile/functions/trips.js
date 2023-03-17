@@ -55,3 +55,104 @@ export const isColorDark = function (color) {
     // Return true if the color is dark, false if it is light
     return brightness < 128;
 }
+
+
+
+export const handleView = (i, desc, Animated, windowHeight, isExpanded, trips, setDesc, setIsExpanded) => {
+    if (isExpanded !== i) {
+        trips.forEach((element, index) => {
+            if (index < i) {
+                Animated.timing(element.height, {
+                    toValue: windowHeight * 0.09,
+                    duration: 500,
+                    useNativeDriver: false,
+                }).start();
+            }
+            else if (index === i) {
+                Animated.timing(element.height, {
+                    toValue: windowHeight * 0.6,
+                    duration: 500,
+                    useNativeDriver: false,
+                }).start();
+            }
+            else {
+                Animated.timing(element.height, {
+                    toValue: windowHeight * 0.2,
+                    duration: 500,
+                    useNativeDriver: false,
+                }).start();
+            }
+        });
+        setDesc("")
+
+        setTimeout(() => {
+            setDesc(desc)
+        }, 500);
+        setIsExpanded(i);
+    }
+    else {
+        trips.forEach((element, index) => {
+            if (index <= isExpanded) {
+                Animated.timing(element.height, {
+                    toValue: windowHeight * 0.2,
+                    duration: 500,
+                    useNativeDriver: false,
+                }).start();
+            }
+        });
+        setDesc("")
+
+        setIsExpanded(-1)
+    }
+};
+
+
+
+export const handleSideBar = function (Animated, showSideBar, windowWidth, windowHeight) {
+    if (!showSideBar.status) {
+        Animated.timing(showSideBar.marginLeft, {
+            toValue: windowWidth * 0.7,
+            duration: 500,
+            useNativeDriver: false,
+        }).start();
+        Animated.timing(showSideBar.containerHeight, {
+            toValue: 500,
+            duration: 500,
+            useNativeDriver: false,
+        }).start();
+        Animated.timing(showSideBar.marginTop, {
+            toValue: windowWidth * 0.4,
+            duration: 500,
+            useNativeDriver: false,
+        }).start();
+        Animated.timing(showSideBar.borderRadius, {
+            toValue: 20,
+            duration: 500,
+            useNativeDriver: false,
+        }).start();
+        showSideBar.status = true
+    } else {
+        Animated.timing(showSideBar.marginLeft, {
+            toValue: 0,
+            duration: 500,
+            useNativeDriver: false,
+        }).start();
+        Animated.timing(showSideBar.containerHeight, {
+            toValue: windowHeight * 0.87,
+            duration: 500,
+            useNativeDriver: false,
+        }).start();
+        Animated.timing(showSideBar.marginTop, {
+            toValue: 0,
+            duration: 500,
+            useNativeDriver: false,
+        }).start();
+        Animated.timing(showSideBar.borderRadius, {
+            toValue: 0,
+            duration: 500,
+            useNativeDriver: false,
+        }).start();
+
+        showSideBar.status = false
+    }
+}
