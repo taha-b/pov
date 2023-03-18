@@ -1,7 +1,6 @@
 import axios from "axios"
 let trips;
-
-
+let colors;
 
 
 
@@ -12,7 +11,6 @@ export const getTrips = function (setTrips, windowHeight, Animated) {
             if (typeof r.data === "string") {
                 console.log(data)
             } else {
-                let colors;
                 axios.get('https://raw.githubusercontent.com/ghosh/uiGradients/master/gradients.json')
                     .then(colorsResult => {
                         colors = colorsResult.data.map(e => e.colors)
@@ -31,6 +29,18 @@ export const getTrips = function (setTrips, windowHeight, Animated) {
 
             }
         })
+}
+export const getHistory = function (history, windowHeight, Animated) {
+    return history.map((e, i) => {
+        const randomGradient = colors[Math.floor(Math.random() * colors.length)]
+        console.log(randomGradient)
+        return {
+            data: e, height: 0.20,
+            randomGradient,
+            height: new Animated.Value(537)
+        }
+    })
+
 }
 
 

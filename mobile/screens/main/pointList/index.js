@@ -2,11 +2,10 @@ import { useEffect, useState, useRef } from 'react';
 import { View, Image, Pressable, TouchableWithoutFeedback, ScrollView, Animated, Dimensions } from 'react-native';
 import { Text } from '@ui-kitten/components';
 import { getPoints, filterPoints } from "../../../functions/points"
-import ListView from "./listView"
 import MapView from './map'
 
 export default Points = ({ route, navigation }) => {
-  const { trip, setHeader } = route.params;
+  const { trip } = route.params;
   const windowHeight = Dimensions.get("window").height + Dimensions.get("window").height * 0.07;
 
   const [isExpanded, setIsExpanded] = useState(false);
@@ -61,8 +60,7 @@ export default Points = ({ route, navigation }) => {
 
   const navigate = (item) => {
     navigation.navigate('Details', {
-      point: item,
-      setHeader
+      point: item
     })
   }
 
@@ -71,15 +69,19 @@ export default Points = ({ route, navigation }) => {
 
       <Pressable onPress={handleView} style={{
         zIndex: 1,
-        height: 30,
-        width: 30,
-        backgroundColor: "blue",
+        height: 40,
+        width: 40,
         position: "absolute",
+        backgroundColor: "gray",
         borderRadius: 50,
         right: 30,
-        top: 70
+        top: 70,
+        alignItems:"center",
+        justifyContent:"center"
       }}>
-
+        <Image style={{ width: "100%", height: "100%", zIndex:1 }}
+          source={{ uri: "https://cdn.discordapp.com/attachments/1073737355896299542/1086475739949453332/pngegg.png" }}
+        />
       </Pressable>
 
       <Animated.View style={{ height: firstSection }}>
@@ -177,7 +179,7 @@ export default Points = ({ route, navigation }) => {
             <Text category='h1' style={{ fontSize: 20, left: 0 }}>
               {selectedTag + " Points"}
             </Text>
-          
+
           </View>
 
           <ScrollView>

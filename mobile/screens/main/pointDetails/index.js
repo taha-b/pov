@@ -4,7 +4,9 @@ import { Text } from '@ui-kitten/components';
 import Svg, { Path } from 'react-native-svg';
 import { LinearGradient } from 'expo-linear-gradient';
 import Map from "./map"
-export default function pointDetails({ route, navigation }) {
+import { updateHistory } from "../../../functions/signin"
+
+export default function pointDetails({ route, navigation, setUser, user }) {
   const { setHeader, point } = route.params;
   const windowHeight = Dimensions.get("window").height + Dimensions.get("window").height * 0.07;
 
@@ -40,14 +42,8 @@ export default function pointDetails({ route, navigation }) {
     setIsExpanded(!isExpanded);
   };
 
-  useEffect(() => {
-    console.log(point, "aze")
-    // setHeader(false);
-    // return () => {
-    //   setHeader(true);
-    // }
-  }, []);
 
+  console.log(point?.tags)
   return (
     <View style={{ height: windowHeight }}>
       <Animated.View style={{
@@ -94,17 +90,35 @@ export default function pointDetails({ route, navigation }) {
             width: "41%", marginTop: "20%",
             alignItems: "center", marginLeft: "3%"
           }}>
-            <View style={{ width: 90, borderRadius: 8, marginTop: -30 }}>
+            <LinearGradient colors={['transparent', uiColors.bg]}
+
+              style={{
+                width: 100,
+                marginTop: -30,
+                height: 100
+              }
+              }>
               <Text style={{ color: uiColors.primary }}>
                 Tags
               </Text>
-              <Text style={{
-                color: uiColors.secondary,
-                fontSize: 30,
-                letterSpacing: -2,
-                textAlign: "center",
-              }} category='h1'>{"COFFE"}</Text>
-            </View>
+              <ScrollView style={{
+                flexGrow: 1, flexShrink: 1,
+                backgroundColor: "transparent",
+                zIndex: -1,
+                marginTop: 10,
+              }}>
+                {point?.tags?.map((e, i) => {
+                  return (
+                    <Text key={i} style={{
+                      color: uiColors.secondary,
+                      fontSize: 30,
+                      letterSpacing: -2,
+                    }} category='h1'>{e}</Text>
+                  )
+                })}
+                <View style={{ height: 40 }} />
+              </ScrollView>
+            </LinearGradient>
           </View>
         </View>
 
@@ -189,8 +203,11 @@ export default function pointDetails({ route, navigation }) {
                 borderRadius: 12
               }}>
                 <TouchableWithoutFeedback onPress={() => {
-                  const url = `https://www.google.com/maps/dir/?api=1&destination=${point.position.latitude},${point.position.longitude}`;
-                  Linking.openURL(url);
+
+                  updateHistory(setUser, user, point).then(() => {
+                    const url = `https://www.google.com/maps/dir/?api=1&destination=${point.position.latitude},${point.position.longitude}`;
+                    Linking.openURL(url);
+                  })
                 }}>
                   <View style={{ flex: 1, display: "flex", alignItems: 'center', justifyContent: 'center' }}>
                     <Image style={{

@@ -6,7 +6,7 @@ let points;
 export const getPoints = function (trip, setPoints, setTags) {
     axios.get("http://10.0.2.2:3000/api/point/" + trip)
         .then(r => {
-            if (typeof (r.data) == "string") {
+            if (!Array.isArray(r.data)) {
                 console.log(r.data)
             } else {
                 setPoints(r.data)
