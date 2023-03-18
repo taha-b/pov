@@ -10,10 +10,13 @@ exports.signin = function (req, res) {
     console.log("login trigerred")
     if (email && password) {
         const q = query(users, where("email", "==", email), where("password", "==", password));
-        getDocs(q).then((e) => {
-            const user = firebaseMapper(e)
-            console.log(user)
-            res.send(user)
+        getDocs(q).then((querySnapshot) => {
+            if (!querySnapshot.empty) {
+                res.send(querySnapshot.docs[0].data())
+            } else {
+                res.send("user not found")
+            }
+
         }).catch(err => res.send("user not found"))
     } else {
         res.send("email & password are a must to login")

@@ -26,10 +26,7 @@ export default function App({ navigate, point }) {
                 longitudeDelta: 0.03,
             }}
         >
-            <Marker coordinate={{ latitude, longitude }}>
-
-            </Marker>
-
+            <Marker coordinate={{ latitude, longitude }} />
         </MapView>
     );
 }

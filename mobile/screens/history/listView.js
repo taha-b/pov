@@ -1,19 +1,21 @@
-import { View, Image, Pressable, Dimensions, ScrollView, Animated,TouchableOpacity } from 'react-native'
+import { View, Image, Pressable, Dimensions, ScrollView, Animated, TouchableOpacity } from 'react-native'
 import { useEffect, useState } from 'react'
 import { Divider, Text } from '@ui-kitten/components';
 import { LinearGradient } from 'expo-linear-gradient';
-import { isColorDark, handleView } from "../../../functions/trips"
+import { isColorDark, handleView } from "../../functions/trips"
 
 export default function listView({ trips, windowHeight, showSideBar, navigation }) {
-    const [isExpanded, setIsExpanded] = useState(-1);
+    const [isExpanded, setIsExpanded] = useState(0);
     const [Desc, setDesc] = useState("");
+
 
     return (
         <View>
             <View style={{ height: "15%" }} />
             <Animated.View style={{
                 borderTopRightRadius: 50, overflow: "hidden",
-                height: showSideBar.containerHeight, borderBottomLeftRadius: showSideBar.borderRadius
+                height: showSideBar.containerHeight,
+                borderBottomLeftRadius: showSideBar.borderRadius,
             }}>
                 <ScrollView>
                     {trips.map((e, i) => {
@@ -64,8 +66,8 @@ export default function listView({ trips, windowHeight, showSideBar, navigation 
                                         </Pressable>
 
                                         <TouchableOpacity onPress={() => {
-                                            navigation.navigate('Points', {
-                                                trip: e.data
+                                            navigation.navigate('Details', {
+                                                point: e.data
                                             })
                                         }}>
                                             {isExpanded === i ? <LinearGradient
