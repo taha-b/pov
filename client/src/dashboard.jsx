@@ -1,37 +1,42 @@
 
-import { LogoutOutlined, PlusOutlined, HeartOutlined, ShareAltOutlined} from '@ant-design/icons';
-import { useNavigate } from 'react-router-dom';
-import React from "react";
+import { LogoutOutlined, PlusOutlined, UserOutlined} from '@ant-design/icons';
+import { useNavigate,useLocation } from 'react-router-dom';
 
 
 const Dashboard = () => {
 const navigate=useNavigate()
-    
 
-  return (
+
+
+ return (
     <div >
       <div className="navbar">
-        <a >
-          <LogoutOutlined style={{ marginRight: '10px' }} />
+        <a 
+        onClick={()=>{
+          localStorage.removeItem('user');
+          navigate('/login')
+
+        }}>
+          <LogoutOutlined 
+          
+          style={{ marginRight: '10px' }} />
           Log Out
         </a>
         <a onClick={()=>navigate("/map")}>
           <PlusOutlined style={{ marginRight: '10px' }} />
-          Add New POV
+          Add New Trip
         </a>
-        <a href="#" >
-          <HeartOutlined style={{ marginRight: '10px' }} />
-          Favorite
+        <a onClick={()=>navigate("/map")}>
+          <PlusOutlined style={{ marginRight: '10px' }} />
+          Add New Point
         </a>
-        <a href="#" >
-          <ShareAltOutlined style={{ marginRight: '10px' }} />
-          Share
+        <a onClick={()=>navigate("/user")} >
+          <UserOutlined  style={{ marginRight: '10px' }} />
+          Users
         </a>
+       
       </div>
-     
-      
-      
-      
+   
     </div>
     
   );

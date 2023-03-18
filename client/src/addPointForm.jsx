@@ -2,10 +2,11 @@
 import axios from 'axios';
 import React from 'react'
 import { useState,useEffect } from 'react';
-import { Input,Button,Select } from "antd";
+import { Input,Button,Select,Space } from "antd";
 import { Link } from 'react-router-dom';
 import { useParams,useLocation} from 'react-router';
-import Geocoder from './geocoder';
+import Authorisation from './authorisation.jsx';
+
 
 
 
@@ -14,17 +15,23 @@ const addTripForm = () => {
   console.log(param)
   const location = useLocation()
   const latLong = location.state.latLong
+  const [user,setUser]=useState('')
 
-  useEffect(() => {getTrip()}, []);
+  useEffect(() => {getTrip();
+    const storedUser = JSON.parse(localStorage.getItem('user'))
+    setUser(storedUser)}, []);
+
+  const handleTag = (value) => {
+    setNewTag(value);
+  };
   
   const [imageUpload, setImageUpload] = useState('');
   const [tripData,setTripData]=useState([])
   const [newTitle,setNewTitle]=useState('')
   const [newDiscription,setNewDiscription]=useState('')
   const [newTag,setNewTag]=useState([])
-  const [newlatitude,setLatitude]=useState('')
-  const [newlongitude,setLongitude]=useState('')
   const [selectedTrip,setSelectedTrip]=useState('')
+  
     
   const uploadImg = async () => {
     const formData = new FormData();
@@ -56,6 +63,11 @@ const addTripForm = () => {
       longitude : latLong.lng
 
     }
+  },
+  {
+    headers: {
+      id:user.id
+    }
   })
     .then((result)=>{
     
@@ -63,8 +75,6 @@ const addTripForm = () => {
     setNewTitle("")
     setNewDiscription("")
     setNewTag([])
-    // setLatitude("")
-    // setLongitude("")
     setImageUpload("")
     })
     .catch((error)=>console.log(error,'zzz'))
@@ -79,6 +89,10 @@ const addTripForm = () => {
       longitude : latLong.lng
 
     }
+  },{
+    headers: {
+      id:user.id
+    }
   })
     .then((result)=>{
       
@@ -92,14 +106,16 @@ const addTripForm = () => {
 
      
   return (
-    <div>
+    
       <form className="forms">
+      {user ? <Space direction="vertical">
         {!param || !param.trip || !param.id ? (
           <Select
             className="select"
             onChange={(value) => setSelectedTrip(value)}
             placeholder="Select Trip"
             value={selectedTrip}
+            style={{width:"100%"}}
           >
             {tripData.map((element) => (
               <Select.Option key={element.name} value={element.name}>
@@ -108,7 +124,8 @@ const addTripForm = () => {
             ))}
           </Select>
         ) : null}
-        <input
+        <Input
+       
           type="file"
           onChange={(e) => {
             setImageUpload(e.target.files[0]);
@@ -124,11 +141,14 @@ const addTripForm = () => {
           onChange={(event) => setNewDiscription(event.target.value)}
           placeholder="Description"
         />
-        <Input
-          className="site-form-item-icon"
-          onChange={(event) => setNewTag(event.target.value)}
-          placeholder="Tags"
-        />
+        <Select
+        mode="tags"
+        style={{ width: '100%' }}
+        placeholder="Tags"
+        onChange={handleTag}
+        
+        
+      /> 
         <Link to="/trip">
           <Button
             className="plus"
@@ -143,8 +163,9 @@ const addTripForm = () => {
             {param && param.trip && param.id ? "Update" : "Submit"}
           </Button>
         </Link>
+        </Space> : <Authorisation/>}
       </form>
-    </div>
+   
   );
   
 }

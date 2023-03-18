@@ -2,9 +2,25 @@ import React from 'react'
 import { Button, Input } from "antd";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import "./index.css"
+import axios from 'axios';
 import { Link} from "react-router-dom";
+import { useState } from 'react';
 
 const signup = () => {
+const [fullName,setFullName]=useState('')
+const [adresseMail,setAdresseMail]=useState('')
+const [passeword,setPasseword]=useState('')
+const [checkPasseword,setCheckPasseword]=useState('')
+
+  const addUser=()=>{
+    axios
+    .post('http://localhost:3000/api/user/signup',{email:adresseMail, name :fullName, password:passeword})
+    .then ((result)=>{
+      setFullName('')
+      setAdresseMail('')
+      setPasseword('')
+    })
+  }
   return (
     <div>
       <form className="forms">
@@ -36,14 +52,15 @@ const signup = () => {
           type="password"
           placeholder="tap again your Password"
         />
-        <Button
-        //   onClick={myClick}
+        <Link to={'/congrats'}><Button
+        onClick={addUser}
           type="primary"
           htmlType="submit"
           className="login-form-button"
         >
           Sign Up
         </Button>
+        </Link>
       </form>
     </div>
   )

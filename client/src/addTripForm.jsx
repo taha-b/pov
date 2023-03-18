@@ -1,12 +1,13 @@
 
 import axios from 'axios';
 import React from 'react'
-import { useState } from 'react';
-import {EnvironmentOutlined } from '@ant-design/icons'
-import { Input,Button,Upload } from "antd";
+import { useState, useEffect } from 'react';
+
+import { Input,Button,Select,Space } from "antd";
 import { Link } from 'react-router-dom';
 import { useParams,useLocation} from 'react-router';
-import Geocoder from './geocoder.jsx';
+import Authorisation from './authorisation.jsx';
+
 
 
 const addTripForm = () => {
@@ -15,14 +16,23 @@ const addTripForm = () => {
   console.log(location)
   const latLong = location.state.latLong
   
+  
   const [imageUpload, setImageUpload] = useState('');
   const [newTitle,setNewTitle]=useState('')
   const [newDiscription,setNewDiscription]=useState('')
   const [newTag,setNewTag]=useState([])
-  const [lat,setLat]=useState('')
-  const [lng,setLng]=useState('')
-    
-        
+  const [user, setUser] = useState({})
+
+  useEffect(()=>{
+    const storedUser = JSON.parse(localStorage.getItem('user'))
+    setUser(storedUser)
+  },[])
+  
+
+  const handleTag = (value) => {
+    setNewTag(value);
+  };
+
   const uploadImg = async () => {
     const formData = new FormData();
     formData.append('file', imageUpload);
@@ -37,24 +47,25 @@ const addTripForm = () => {
 
     uploadImg(imageUpload).then((imageUrl) => {
       axios.post('http://localhost:3000/api/trip', {
-        name: newTitle,
-        desc: newDiscription,
-        tag: newTag,
-        imgUrl: imageUrl,
-        position:{
-          latitude : latLong.lat,
-          longitude : latLong.lng
-
-        }
-      })
+  name: newTitle,
+  desc: newDiscription,
+  tag: newTag,
+  imgUrl: imageUrl,
+  position: {
+    latitude: latLong.lat,
+    longitude: latLong.lng
+  }
+}, {
+  headers: {
+    id:user.id
+  }
+})
       .then((result) => {
         console.log('ya weldi')
         setNewTitle('');
         setNewDiscription('');
         setNewTag([]);
         setImageUpload('');
-        // setLat('');
-        // setLng('')
         
       })
       .catch((error) => console.log(error));
@@ -70,7 +81,11 @@ const addTripForm = () => {
         latitude : latLong.lat,
         longitude : latLong.lng
 
-      }})
+      }},{
+        headers: {
+          id:user.id
+        }
+      })
     .then((result)=>{
       
       setNewTitle('')
@@ -87,42 +102,48 @@ const addTripForm = () => {
 
   
   return (
-    <div>
+   
        <form className="forms">
-       <input
-        type="file"
-        onChange={(e) => {
-          setImageUpload(e.target.files[0]);
-        }}
-      />
-        <Input
-          className="site-form-item-icon"
-          onChange={(event) => setNewTitle(event.target.value)}
-          placeholder="Title"
-        />
-        <Input
-          className="site-form-item-icon"
-          onChange={(event) => setNewDiscription(event.target.value)}
-          placeholder="Discription"
-        />
-        <Input
-          className="site-form-item-icon"
-          onChange={(event) => setNewTag(event.target.value)}
-          placeholder="Tags"
-        />
-        {/* <Link to={'/map'}><EnvironmentOutlined /></Link> */}
-      
-<Link to='/trip'>
-  <Button className='plus' 
-  onClick={
-  
-    param && param.name ? updateTrip : addNewTrip    
-    }>
-    {param && param.name ? 'Update': "Submit"  }
-    </Button>
-    </Link>
+        {user ?
+        <Space direction="vertical">
+        <input
+         type="file"
+         onChange={(e) => {
+           setImageUpload(e.target.files[0]);
+         }}
+       />
+         <Input
+           className="site-form-item-icon"
+           onChange={(event) => setNewTitle(event.target.value)}
+           placeholder="Title"
+         />
+         <Input
+           className="site-form-item-icon"
+           onChange={(event) => setNewDiscription(event.target.value)}
+           placeholder="Discription"
+         />
+         <Select
+         mode="tags"
+         style={{ width: '100%' }}
+         placeholder="Tags"
+         onChange={handleTag}
+         
+         
+       /> 
+ 
+    
+ <Link to='/trip'>
+   <Button className='plus' 
+   onClick={
+   
+     param && param.name ? updateTrip : addNewTrip    
+     }>
+     {param && param.name ? 'Update': "Submit"  }
+     </Button>
+     </Link>
+     </Space> : <Authorisation/>}
        </form>
-    </div>
+  
   )
 }
 export default addTripForm;

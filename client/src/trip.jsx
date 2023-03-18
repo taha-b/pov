@@ -1,14 +1,18 @@
 import {useState,useEffect} from 'react';
-import { Table,Tag } from "antd";
+import { Table,Tag,Space, Input } from "antd";
 import {  EyeOutlined ,DeleteOutlined,EditOutlined }from "@ant-design/icons";
 import axios from 'axios';
-import { Link,useParams,useNavigate } from "react-router-dom";
+import { Link,useNavigate,useLocation } from "react-router-dom";
+import Dashboard from './dashboard.jsx';
+import Authorisation from './authorisation.jsx';
 
 
 
 const trip = () => {
 
   const navigate=useNavigate()
+  const location=useLocation()
+  const user = location.state?.user
   const [tripData,setTripData]=useState([])
   
   
@@ -18,14 +22,27 @@ const trip = () => {
     axios
       .get("http://localhost:3000/api/trip/")
       .then((result) => {
-        
-        setTripData(result.data);
-        console.log(result.data)
+        setTripData(result.data)
       })
-      .catch((error) => console.log(error));
+       .catch((error) => console.log(error));
   };
 
+ 
+    const filtreTrips =(name)=>{
+      if (name === "") {
+      
+        getTrip();
+      } else {
+      
+        const filteredTrips = tripData.filter((element) =>
+        element.name.toLowerCase().includes(name.toLowerCase())
+        );
+        setTripData(filteredTrips);
+      }
+    
+  }
 
+  
 
   const deleteTrip =(name)=>{
     axios
@@ -55,55 +72,60 @@ const columns = [
   dataIndex:"name",
 },
 {
-  title :"Discription",
+  title :"Description",
   dataIndex:"desc",
 },
 {
   title :"Tags",
   dataIndex:"tag",
   render: (tag) => (
-      <>
-        {tag?.map((element, i) => {
-          
-          let color = "";
-          if (i === 0) {
-            color = "yellow";
-          } else if (i === 1) {
-            color = "orange";
-          } else if (i === 2) {
-            color = "red";
-          }
-          return <Tag color={color} key={element}>{element}</Tag>;
-        })}
-      </>
-    ),
+    <>
+      {tag?.map((element) => {
+        const randomIndex = Math.floor(Math.random() * tag.length);
+        const randomColor = ["yellow", "orange", "red", "blue", "green", "purple","magenta","volcano"][randomIndex];
+        return <Tag color={randomColor} key={element}>{element}</Tag>;
+      })}
+    </>
+  ),
 },
 {
   title :"Action",
   dataIndex:"action",
   render: (_, record) => (
-      <>
-        
+      <div >
+        <Space>
          <EyeOutlined onClick={()=>{ navigate(`/point/${record.name}`)}}/>
-          
+         
           
         <Link to={'/map/'+record.name}><EditOutlined /></Link>
           
           
         
     <DeleteOutlined onClick={()=>deleteTrip(record.name)}/>
-      
-      </>
+    </Space>
+      </div>
      
   
 ),
 }];
   return (
-  
-      <div className='table'>
-      <Table dataSource={tripData} columns={columns} />
-      
-      </div>
+    <div>
+    {user ? (
+      <>
+        <div >
+          <Input className='filtre' onClear={() => getTrip()} onPressEnter={(e) => filtreTrips(e.target.value)} placeholder="Search For Trip"/>
+        </div>
+        <div className='table'>
+          <Table dataSource={tripData} columns={columns} />
+        </div>
+        <div>
+          <Dashboard/>
+        </div>
+      </>
+    ) : (
+      <Authorisation />
+    )}
+  </div>
   
   )
 }
