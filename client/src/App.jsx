@@ -1,14 +1,28 @@
-import React from 'react'
+import {useEffect,useRef} from 'react'
 import {Button,Input} from 'antd'
 import { Link,useNavigate } from 'react-router-dom'
+import lottie from 'lottie-web'
 import "./index.css"
+import mapData from '../map.json'
 
 
 
 
 function App() {
-  const navigate=useNavigate()
+  
   console.log(import.meta.env.VITE_REACT_FIREBASE_API_KEY)
+  const navigate=useNavigate()
+  const container = useRef(null)
+
+  useEffect(()=>{
+    lottie.loadAnimation({
+      container : container.current,
+      render:'svg',
+      loop:true,
+      autoplay:true,
+      animationData:mapData
+    })
+  },[])
   return (
     <div className='hero'>
       <nav>
@@ -30,7 +44,8 @@ function App() {
       
       </div>
       
-      <img src="../public/img/map.png" className='map'/>
+      <div className='container' ref={container}></div>
+      {/* <img src="../public/img/map.png" className='map'/> */}
       </div>
       
      
