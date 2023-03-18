@@ -121,12 +121,25 @@ nav a:hover, nav button:hover {
         }
       }
 
-.center{
+#center{
     text-align: center;
     position: relative;
     margin-bottom: 100px;
     margin-top: 100px;
     
+}
+
+#what-we-do{
+  text-align: center;
+    position: relative;
+    margin-bottom: 100px;
+    margin-top: 100px;
+}
+#why-pov{
+  text-align: center;
+  position: relative;
+  margin-bottom: 100px;
+  margin-top: 100px;
 }
 
 .separator {
@@ -230,9 +243,9 @@ nav a:hover, nav button:hover {
   }
 
   .forms .welcome {
-    text-shadow: -3px 3px 2px rgba(0,0,0,0.6);
+   
     text-align: center;
-     color: white
+     color: #1890ff;
   }
 
   .site-form-item-icon{
@@ -246,8 +259,9 @@ nav a:hover, nav button:hover {
 
   .register-now{
     text-align:center;
-     margin-top:25px;
-      font-size: 25px
+    margin-top:25px;
+    
+      
   }
   
 .android{
@@ -322,7 +336,8 @@ footer .logo{
 
 
 .table{
-  margin: 10% auto;
+  margin-left:25%;
+  margin-top: 10%;
   width: 60%;
   align-items: center;
     background-color: none;
@@ -355,6 +370,87 @@ footer .logo{
 .filtre{
   width: 250px;
   position: absolute;
-  left: 40%;
+  left: 45%;
   top: 50px;
 }
+.awesome{
+  color: #1890ff;
+  position: relative;
+  top:50px;
+  left: 33%;
+  margin-bottom: 80px;
+}
+.formsg h2 {
+  margin-left: 45px;
+}
+
+.downloadapp{
+  position: relative;
+  left: 38%;
+  margin-top: 50px;
+}
+.formsg{
+position: absolute;
+    width: 450px;
+    padding: 30px 20px;
+    margin: 20px 20px 40px;
+    align-items: center;
+    background-color: white;
+    border-radius: 5px;
+    border: 1px solid rgba(0,0,0,.18);
+    transition: transform .1s ease-in-out, box-shadow .1s, transform .2s ease-in-out;
+   
+    transform: translate(-50%, -50%);
+    left: 50%;
+    top: 45%;
+  }
+
+  .check{
+    width: 150px;
+    height: 150px;
+    background-color: none;
+    position:absolute;
+    left: 47%;
+    top:7%;
+    z-index: 1
+  }
+
+  .checks{
+    width: 130px;
+    height: 130px;
+    background-color: none;
+    position:relative;
+    left: 46%;
+    top:8%;
+    z-index: 1
+  }
+
+  .awesomes{
+    color: red;
+  position: relative;
+  top:50px;
+  left: 39%;
+  margin-bottom: 80px;
+  }
+  .formsgs{
+    position: absolute;
+        width: 450px;
+        padding: 30px 20px;
+        margin: 20px 20px 40px;
+        align-items: center;
+        background-color: white;
+        border-radius: 5px;
+        border: 1px solid rgba(0,0,0,.18);
+        transition: transform .1s ease-in-out, box-shadow .1s, transform .2s ease-in-out;
+       
+        transform: translate(-50%, -50%);
+        left: 50%;
+        top: 45%;
+      }
+  .formsgs h2{
+    margin-left: 45px;
+  }
+  .formsgs Button{
+    background-color: red;
+  }
+  

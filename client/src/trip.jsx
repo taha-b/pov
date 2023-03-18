@@ -2,14 +2,17 @@ import {useState,useEffect} from 'react';
 import { Table,Tag,Space, Input } from "antd";
 import {  EyeOutlined ,DeleteOutlined,EditOutlined }from "@ant-design/icons";
 import axios from 'axios';
-import { Link,useNavigate } from "react-router-dom";
+import { Link,useNavigate,useLocation } from "react-router-dom";
 import Dashboard from './dashboard.jsx';
+import Authorisation from './authorisation.jsx';
 
 
 
 const trip = () => {
 
   const navigate=useNavigate()
+  const location=useLocation()
+  const user = location.state?.user
   const [tripData,setTripData]=useState([])
   
   
@@ -32,7 +35,7 @@ const trip = () => {
       } else {
       
         const filteredTrips = tripData.filter((element) =>
-          element.name.includes(name)
+        element.name.toLowerCase().includes(name.toLowerCase())
         );
         setTripData(filteredTrips);
       }
@@ -107,17 +110,22 @@ const columns = [
 }];
   return (
     <div>
-      <div >
-      <Input className='filtre' onClear={() => getTrip()} onPressEnter={(e) => filtreTrips(e.target.value)} placeholder="Search For Trip"/>
-      </div>
-    <div className='table'>
-      <Table dataSource={tripData} columns={columns} />
-    </div>
-    <div>
-    <Dashboard/>
-    </div>
-    </div>
-
+    {user ? (
+      <>
+        <div >
+          <Input className='filtre' onClear={() => getTrip()} onPressEnter={(e) => filtreTrips(e.target.value)} placeholder="Search For Trip"/>
+        </div>
+        <div className='table'>
+          <Table dataSource={tripData} columns={columns} />
+        </div>
+        <div>
+          <Dashboard/>
+        </div>
+      </>
+    ) : (
+      <Authorisation />
+    )}
+  </div>
   
   )
 }

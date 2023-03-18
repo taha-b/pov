@@ -3,23 +3,23 @@ import { LogoutOutlined, PlusOutlined, UserOutlined} from '@ant-design/icons';
 import { useNavigate,useLocation } from 'react-router-dom';
 
 
-
-
-
 const Dashboard = () => {
 const navigate=useNavigate()
 
 
 
-
-
-    
-
-  return (
+ return (
     <div >
       <div className="navbar">
-        <a >
-          <LogoutOutlined style={{ marginRight: '10px' }} />
+        <a 
+        onClick={()=>{
+          localStorage.removeItem('user');
+          navigate('/login')
+
+        }}>
+          <LogoutOutlined 
+          
+          style={{ marginRight: '10px' }} />
           Log Out
         </a>
         <a onClick={()=>navigate("/map")}>
@@ -30,7 +30,7 @@ const navigate=useNavigate()
           <PlusOutlined style={{ marginRight: '10px' }} />
           Add New Point
         </a>
-        <a href="#" >
+        <a onClick={()=>navigate("/user")} >
           <UserOutlined  style={{ marginRight: '10px' }} />
           Users
         </a>

@@ -1,27 +1,24 @@
 import React from 'react'
-import { GoogleAuth } from './config/firebase'
 import {Button,Input} from 'antd'
-
+import { Link,useNavigate } from 'react-router-dom'
 import "./index.css"
 
 
 
 
 function App() {
+  const navigate=useNavigate()
   console.log(import.meta.env.VITE_REACT_FIREBASE_API_KEY)
   return (
     <div className='hero'>
       <nav>
         <img src="../public/img/logo.png" className='logo'/>
-      <a href="#">Home</a>
-		<a href="#">What we do</a>
-		<a href="#">Why us</a>
-		<a href="#">Our work</a>
-		<Button type='primary'>Sign up</Button>
-    <Button type='primary' onClick={()=>GoogleAuth()}>
-      Sign in
-      </Button>
-      </nav>
+   
+        <a onClick={() => document.getElementById('what-we-do').scrollIntoView({ behavior: 'smooth' })}>What we do</a>
+		<a onClick={() => document.getElementById('why-pov').scrollIntoView({ behavior: 'smooth' })}>Why us</a>
+		<a onClick={() => document.getElementById('center').scrollIntoView({ behavior: 'smooth' })}>Testimonals</a>
+		<Link to={'/signup'}><Button type='primary'>Sign up</Button></Link>
+    </nav>
       
      
       
@@ -36,14 +33,9 @@ function App() {
       <img src="../public/img/map.png" className='map'/>
       </div>
       
-      {/* <h3>With our app, you can:</h3>
-      <ul>
-        <li>save time and organize your trip</li>
-        <li>get suggestions based on intrest points</li>
-        <li> Connect <Button type='primary' className='start' >Get Started</Button></li>
-      </ul> */}
+     
       <div>
-        <h1 className='center'>what we do</h1>
+        <h1 id="what-we-do">what we do</h1>
         <div className='pov-forms'>
       <div className='pov-form'><img src="../public/img/discover.png"  className='form-img'/><h2>Discover amazing destinations </h2> Encourage users to explore new places and find hidden gems.</div>
       <div className='pov-form'><img src="../public/img/planning.jpg"  className='form-img'/><h2>Plan your perfect trip</h2> Offer tools and resources to help users plan their travel itinerary.</div>
@@ -54,18 +46,18 @@ function App() {
         <div className='right'>
         <img src="../public/img/sign-up.png"  className='join'/>
         <div className='input'>
-        <Input className='Sign' placeholder='Full Name'></Input>
-        <Input className='Sign' placeholder='Adress Mail'></Input>
-        <Input className='Sign' placeholder='Passeword'></Input>
-        <Input className='Sign' placeholder='Check Passeword'></Input>
-        <Button type='primary' className='Sign'>Sign up for free</Button>
+        <Input className='Sign' placeholder='Full Name' onClick={()=>navigate('/signup')}></Input>
+        <Input className='Sign' placeholder='Adress Mail' onClick={()=>navigate('/signup')}></Input>
+        <Input className='Sign' placeholder='Passeword' onClick={()=>navigate('/signup')}></Input>
+        <Input className='Sign' placeholder='Check Passeword' onClick={()=>navigate('/signup')}></Input>
+        <Link Link to={'/signup'}><Button type='primary' className='Sign'>Sign up for free</Button></Link>
         
         </div>
         </div>
       
       </div>
       <div className='why'>
-      <h1 className='center'>Why POV </h1>
+      <h1 id='why-pov'>Why POV </h1>
       </div>
       <div className='pov-forms'>
       <div className='pov-form'>
@@ -77,11 +69,30 @@ function App() {
       <div className='pov-form'><img src="../public/img/trust.png"  className='form-img'/><h2>Trusted recommendations</h2> Highlight that your app offers trusted recommendations from travel experts and real travelers, making it easy for users to plan and book their trips with confidence.</div>
       
 </div>
-<h1 className='center'>Join thousands of happiest customers</h1>
+<h1 id='center'>Join thousands of happiest customers</h1>
         <div className='pov-forms'>
-      <div className='pov-form'><img src="../public/img/chat.png"  className='form-img'/><h2>Discover amazing destinations</h2>Encourage users to explore new places and find hidden gems.</div>
-      <div className='pov-form'><img src="../public/img/chat.png"  className='form-img'/><h2>Plan your perfect trip</h2>Offer tools and resources to help users plan their travel itinerary.</div>
-      <div className='pov-form'><img src="../public/img/chat.png"  className='form-img'/><h2>Create unforgettable memories</h2>Emphasize the transformative power of travel and the importance of creating lasting memories.</div>
+      <div className='pov-form'>
+        
+        <img src="../public/img/chat.png"  className='form-img' />
+        
+        
+        <h2>Mark Zuckerberg</h2>
+        Your work is very good.
+        </div>
+      <div className='pov-form'>
+       
+        <img src="../public/img/chat.png"  className='form-img'/>
+       
+        <h2>Elon Musk</h2>
+        I love Tunisia<br/>Thx to you guys.
+        </div>
+      <div className='pov-form'>
+       
+        <img src="../public/img/chat.png"  className='form-img'/>
+       
+        <h2>Kanye West</h2>
+        I love it it's easy to use.
+        </div>
       </div>
       <div className='separator'></div>
       <footer>

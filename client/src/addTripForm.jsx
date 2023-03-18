@@ -1,11 +1,12 @@
 
 import axios from 'axios';
 import React from 'react'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import { Input,Button,Select,Space } from "antd";
 import { Link } from 'react-router-dom';
 import { useParams,useLocation} from 'react-router';
+import Authorisation from './authorisation.jsx';
 
 
 
@@ -20,8 +21,14 @@ const addTripForm = () => {
   const [newTitle,setNewTitle]=useState('')
   const [newDiscription,setNewDiscription]=useState('')
   const [newTag,setNewTag]=useState([])
+  const [user, setUser] = useState({})
+
+  useEffect(()=>{
+    const storedUser = JSON.parse(localStorage.getItem('user'))
+    setUser(storedUser)
+  },[])
   
-    
+
   const handleTag = (value) => {
     setNewTag(value);
   };
@@ -40,16 +47,19 @@ const addTripForm = () => {
 
     uploadImg(imageUpload).then((imageUrl) => {
       axios.post('http://localhost:3000/api/trip', {
-        name: newTitle,
-        desc: newDiscription,
-        tag: newTag,
-        imgUrl: imageUrl,
-        position:{
-          latitude : latLong.lat,
-          longitude : latLong.lng
-
-        }
-      })
+  name: newTitle,
+  desc: newDiscription,
+  tag: newTag,
+  imgUrl: imageUrl,
+  position: {
+    latitude: latLong.lat,
+    longitude: latLong.lng
+  }
+}, {
+  headers: {
+    id:user.id
+  }
+})
       .then((result) => {
         console.log('ya weldi')
         setNewTitle('');
@@ -71,7 +81,11 @@ const addTripForm = () => {
         latitude : latLong.lat,
         longitude : latLong.lng
 
-      }})
+      }},{
+        headers: {
+          id:user.id
+        }
+      })
     .then((result)=>{
       
       setNewTitle('')
@@ -90,43 +104,44 @@ const addTripForm = () => {
   return (
    
        <form className="forms">
+        {user ?
         <Space direction="vertical">
-       <input
-        type="file"
-        onChange={(e) => {
-          setImageUpload(e.target.files[0]);
-        }}
-      />
-        <Input
-          className="site-form-item-icon"
-          onChange={(event) => setNewTitle(event.target.value)}
-          placeholder="Title"
-        />
-        <Input
-          className="site-form-item-icon"
-          onChange={(event) => setNewDiscription(event.target.value)}
-          placeholder="Discription"
-        />
-        <Select
-        mode="tags"
-        style={{ width: '100%' }}
-        placeholder="Tags"
-        onChange={handleTag}
-        
-        
-      /> 
-
+        <input
+         type="file"
+         onChange={(e) => {
+           setImageUpload(e.target.files[0]);
+         }}
+       />
+         <Input
+           className="site-form-item-icon"
+           onChange={(event) => setNewTitle(event.target.value)}
+           placeholder="Title"
+         />
+         <Input
+           className="site-form-item-icon"
+           onChange={(event) => setNewDiscription(event.target.value)}
+           placeholder="Discription"
+         />
+         <Select
+         mode="tags"
+         style={{ width: '100%' }}
+         placeholder="Tags"
+         onChange={handleTag}
+         
+         
+       /> 
+ 
+    
+ <Link to='/trip'>
+   <Button className='plus' 
+   onClick={
    
-<Link to='/trip'>
-  <Button className='plus' 
-  onClick={
-  
-    param && param.name ? updateTrip : addNewTrip    
-    }>
-    {param && param.name ? 'Update': "Submit"  }
-    </Button>
-    </Link>
-    </Space>
+     param && param.name ? updateTrip : addNewTrip    
+     }>
+     {param && param.name ? 'Update': "Submit"  }
+     </Button>
+     </Link>
+     </Space> : <Authorisation/>}
        </form>
   
   )

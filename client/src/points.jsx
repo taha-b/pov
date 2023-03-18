@@ -4,11 +4,13 @@ import {DeleteOutlined,EditOutlined }from "@ant-design/icons";
 import axios from 'axios';
 import {useParams,useNavigate } from "react-router-dom";
 import Dashboard from './dashboard.jsx';
+import Authorisation from './authorisation.jsx';
 
 
 
 const point = () => {
   const [pointData,setPointData]=useState([])
+  const [user, setUser] = useState({})
   const navigate=useNavigate()
 
   const {trip} = useParams()
@@ -32,7 +34,7 @@ const point = () => {
     } else {
       
       const filteredPoints = pointData.filter((element) =>
-        element.name.includes(name)
+      element.name.toLowerCase().includes(name.toLowerCase())
       );
       setPointData(filteredPoints);
     }
@@ -40,6 +42,8 @@ const point = () => {
   useEffect(() => {
         
     getpoints();
+    const storedUser = JSON.parse(localStorage.getItem('user'))
+      setUser(storedUser)
   }, []);
   
   
@@ -96,17 +100,23 @@ const columns = [
 ),
 }];
   return (
-  <div>
-     <div >
-      <Input className='filtre' onClear={() => getpoints()} onPressEnter={(e) => filtrePoints(e.target.value)} placeholder="Search For Point"/>
-      </div>
-      <div className='table'>
-        <Table dataSource={pointData.length > 0 ? pointData : []} columns={columns} />
-      </div>
-      <div>
-      <Dashboard/>
-      </div>
-      </div>
+    <div>
+    {user ? (
+      <>
+        <div >
+          <Input className='filtre' onClear={() => getpoints()} onPressEnter={(e) => filtrePoints(e.target.value)} placeholder="Search For Point"/>
+        </div>
+        <div className='table'>
+          <Table dataSource={pointData.length > 0 ? pointData : []} columns={columns} />
+        </div>
+        <div>
+          <Dashboard/>
+        </div>
+      </>
+    ) : (
+      <Authorisation />
+    )}
+  </div>
   
   )
 }

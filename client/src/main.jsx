@@ -12,6 +12,9 @@ import Points from "./points.jsx";
 import Trip from "./trip.jsx"
 import AddPointForm from "./addPointForm"
 import Map from "./map.jsx"
+import Users from "./users.jsx"
+import Congrats from "./modalSignup.jsx"
+import Authorisation from "./authorisation.jsx"
 
 
 const router = createHashRouter([
@@ -71,6 +74,18 @@ const router = createHashRouter([
   {
     path: "/map/:trip/:id",
     element: <Map />,
+  },
+  {
+    path: "/user",
+    element: <Users />,
+  },
+  {
+    path: "/congrats",
+    element: <Congrats />,
+  },
+  {
+    path: "/auto",
+    element: <Authorisation />,
   },
 ]);
 

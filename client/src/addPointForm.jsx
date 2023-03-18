@@ -5,6 +5,7 @@ import { useState,useEffect } from 'react';
 import { Input,Button,Select,Space } from "antd";
 import { Link } from 'react-router-dom';
 import { useParams,useLocation} from 'react-router';
+import Authorisation from './authorisation.jsx';
 
 
 
@@ -14,8 +15,11 @@ const addTripForm = () => {
   console.log(param)
   const location = useLocation()
   const latLong = location.state.latLong
+  const [user,setUser]=useState('')
 
-  useEffect(() => {getTrip()}, []);
+  useEffect(() => {getTrip();
+    const storedUser = JSON.parse(localStorage.getItem('user'))
+    setUser(storedUser)}, []);
 
   const handleTag = (value) => {
     setNewTag(value);
@@ -27,6 +31,7 @@ const addTripForm = () => {
   const [newDiscription,setNewDiscription]=useState('')
   const [newTag,setNewTag]=useState([])
   const [selectedTrip,setSelectedTrip]=useState('')
+  
     
   const uploadImg = async () => {
     const formData = new FormData();
@@ -58,6 +63,11 @@ const addTripForm = () => {
       longitude : latLong.lng
 
     }
+  },
+  {
+    headers: {
+      id:user.id
+    }
   })
     .then((result)=>{
     
@@ -79,6 +89,10 @@ const addTripForm = () => {
       longitude : latLong.lng
 
     }
+  },{
+    headers: {
+      id:user.id
+    }
   })
     .then((result)=>{
       
@@ -94,7 +108,7 @@ const addTripForm = () => {
   return (
     
       <form className="forms">
-      <Space direction="vertical">
+      {user ? <Space direction="vertical">
         {!param || !param.trip || !param.id ? (
           <Select
             className="select"
@@ -149,7 +163,7 @@ const addTripForm = () => {
             {param && param.trip && param.id ? "Update" : "Submit"}
           </Button>
         </Link>
-        </Space>
+        </Space> : <Authorisation/>}
       </form>
    
   );
