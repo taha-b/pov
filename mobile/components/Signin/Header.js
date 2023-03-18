@@ -4,9 +4,9 @@ import Svg, { Path } from 'react-native-svg';
 
 export default function App({ page, focus, navigation }) {
 
-
+    console.log(focus)
     return (
-        <View style={{ backgroundColor: "#181d3d", height: 290, zIndex: focus }}>
+        <View style={{ backgroundColor: "#181d3d", height: focus < 3 ? "33%" : focus === 3 ? "35%" : "25%" }}>
             <Text style={{
                 textAlign: 'center', color: 'white',
                 marginTop: "30%",
@@ -15,7 +15,7 @@ export default function App({ page, focus, navigation }) {
             <View style={{ marginTop: 0, backgroundColor: "#181d3d", width: "100%" }}>
                 <Svg
                     style={{
-                        width: "100%", height: 500, position: "absolute", marginTop: "-17%"
+                        width: "100%", height: 500, position: "absolute", marginTop: focus === 2 ? "-41%" : focus === 4 ? "-48%" : "-17%"
                     }}
                     viewBox="0 0 1440 320"
                 >
