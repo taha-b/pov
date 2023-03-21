@@ -27,7 +27,13 @@ const login = () => {
     
   }
   return (
-    <div>
+    <div style={{
+      height: "100vh",
+      width: "100vw",
+      backgroundImage:
+        'url("https://wallpapercave.com/wp/wp2939993.jpg")',
+      backgroundSize: "cover",
+    }}>
       <form className="forms">
         <h1 className="welcome">WELCOME Back !</h1>
 
@@ -47,7 +53,7 @@ const login = () => {
 
         <Button
           onClick={() => login()}
-          type="primary"
+          // type="primary"
           htmlType="submit"
           className="login-form-button"
          
