@@ -1,33 +1,31 @@
-import { View, TouchableWithoutFeedback, Keyboard, Text, Pressable } from 'react-native';
-
+import { View, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Text, Pressable } from 'react-native';
 import Header from '../../../components/Signin/Header'
 import Inputs from './Inputs';
 import { useState } from 'react';
-import { useFonts, Lato_900Black, Lato_400Regular } from '@expo-google-fonts/lato';
 import { signup } from '../../../functions/signin';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import Loading from "../../../components/Loading/Loading"
+import Modal from "../../../components/Signin/Modal"
+
 export default function Index({ navigation }) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [checkPass, setCheckPass] = useState('');
-    const [focus, setFocus] = useState(3)
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState(null)
 
-    let [fontsLoaded] = useFonts({
-        Lato_900Black, Lato_400Regular
-    });
 
-    if (!fontsLoaded) {
-        return null;
-    }
 
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-            <View style={{ backgroundColor: "white" }}>
-                <Header page={"Signup"} navigation={navigation}
-                    focus={focus} setFocus={setFocus}
-                />
+            <KeyboardAwareScrollView style={{ backgroundColor: "white", height: "100%" }}
+                contentContainerStyle={{ flexGrow: 1 }}>
+                {error ? <Modal error={error} setError={setError} /> : null}
+                {loading ? <Loading /> : null}
+
+                <Header page={"Signup"} navigation={navigation} />
                 <View style={{ height: 80 }} />
                 <Inputs
-                    focus={focus} setFocus={setFocus}
                     email={email} setEmail={setEmail}
                     password={password} setPassword={setPassword}
                     checkPass={checkPass} setCheckPass={setCheckPass} />
@@ -35,15 +33,10 @@ export default function Index({ navigation }) {
                     display: "flex",
                     alignItems: "center",
                     marginTop: 30,
-
                 }}>
-                    <Pressable onPress={() => {
-                      
-
-                        signup(null, navigation, email, password, checkPass)
-                    }}
+                    <Pressable onPress={() => signup(null, navigation, email, password, checkPass, setError, setLoading)}
                         style={{
-                            backgroundColor: "#181d3d",
+                            backgroundColor: "#952e48",
                             width: 180,
                             height: 40,
                             display: "flex",
@@ -55,15 +48,11 @@ export default function Index({ navigation }) {
                             fontWeight: "bold",
                             marginTop: 5.5,
                             fontSize: 20
-                        }}>Sign Up</Text>
+                        }}>Sign up</Text>
                     </Pressable>
                 </View>
-                <View style={{ marginTop: 50, display: "flex", flexDirection: "row", alignSelf: "center" }}>
-                    <Text
-                        onPress={() => navigation.navigate("Login")}
-                        style={{ fontSize: 19 }}> Have An Account ?</Text>
-                </View>
-            </View>
+
+            </KeyboardAwareScrollView>
         </TouchableWithoutFeedback>
     )
 }

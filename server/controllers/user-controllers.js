@@ -12,7 +12,7 @@ exports.signin = function (req, res) {
         const q = query(users, where("email", "==", email), where("password", "==", password));
         getDocs(q).then((querySnapshot) => {
             if (!querySnapshot.empty) {
-                res.send(querySnapshot.docs[0].data())
+                res.send({...querySnapshot.docs[0].data(), id :querySnapshot.docs[0].id})
             } else {
                 res.send("user not found")
             }

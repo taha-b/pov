@@ -5,12 +5,10 @@ import MainStack from './routes/mainStack'
 import { ApplicationProvider, Layout, Text } from '@ui-kitten/components';
 import * as eva from '@eva-design/eva';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
-
 export default function App() {
 
   const [user, setUser] = useState("Loading")
-  console.log(user)
+
   useEffect(() => {
     if (!user || typeof user === "string") {
       AsyncStorage.getItem('user').then(r => {
@@ -20,11 +18,9 @@ export default function App() {
     }
   }, [])
 
-
   const Navigators = function () {
-
     if (!user) {
-      return <SigninNavigator setUser={setUser} />
+      return <SigninNavigator setUser={setUser}  />
     }
     else if (typeof user === "string") {
       return
@@ -36,7 +32,7 @@ export default function App() {
 
   return (
     <ApplicationProvider {...eva} theme={eva.light}>
-      <Navigators />
+      <Navigators style={{ opacity: 1 }} />
     </ApplicationProvider>
   );
 }

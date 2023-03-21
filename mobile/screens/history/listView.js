@@ -79,7 +79,7 @@ export default function listView({ trips, windowHeight, showSideBar, navigation 
                                                     width: "90%",
                                                     height: "40%",
                                                     alignSelf: "center",
-                                                    marginTop: "33%",
+                                                    marginTop: "35%",
                                                     zIndex: 1
                                                 }}
                                             /> : null}

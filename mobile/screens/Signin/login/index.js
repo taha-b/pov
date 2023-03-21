@@ -1,19 +1,26 @@
-import { View, TouchableWithoutFeedback, Keyboard, Text, Pressable } from 'react-native';
+import { View, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Text, Pressable } from 'react-native';
 import Header from '../../../components/Signin/Header'
 import Inputs from './Inputs';
 import { useState } from 'react';
 import { login } from '../../../functions/signin';
-
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import Loading from "../../../components/Loading/Loading"
+import Modal from "../../../components/Signin/Modal"
 export default function Index({ navigation, setUser }) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [focus, setFocus] = useState(1)
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState(null)
 
 
 
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-            <View style={{ backgroundColor: "white", height: "100%" }}>
+            <KeyboardAwareScrollView style={{ backgroundColor: "white", height: "100%" }}
+                contentContainerStyle={{ flexGrow: 1 }}>
+                {error ? <Modal error={error} setError={setError} /> : null}
+                {loading ? <Loading /> : null}
                 <Header focus={focus} page={"Login"} />
                 <View style={{ height: 80 }} />
                 <Inputs
@@ -27,11 +34,10 @@ export default function Index({ navigation, setUser }) {
                     display: "flex",
                     alignItems: "center",
                     marginTop: 30,
-
                 }}>
-                    <Pressable onPress={() => login(email, password, setUser)}
+                    <Pressable onPress={() => login(email, password, setUser, setError, setLoading)}
                         style={{
-                            backgroundColor: "#181d3d",
+                            backgroundColor: "#952e48",
                             width: 180,
                             height: 40,
                             display: "flex",
@@ -47,16 +53,18 @@ export default function Index({ navigation, setUser }) {
                     </Pressable>
                 </View>
                 <View style={{ marginTop: 50 }}>
-                    <Text style={{ textAlign: "center", fontSize: 19 }}>Dont Have A Account ?</Text>
+                    <Text style={{ textAlign: "center", fontSize: 19, color: "#480048" }}>Dont Have A Account ?</Text>
                     <Text onPress={() => navigation.navigate("Signup")} style={{
                         textAlign: "center",
                         fontSize: 25,
                         fontWeight: "bold",
-                        color: "#181d3d",
+                        color: "#952e48",
                         marginTop: 10
                     }}>Sign Up!</Text>
+
+
                 </View>
-            </View>
+            </KeyboardAwareScrollView>
         </TouchableWithoutFeedback>
     )
 }

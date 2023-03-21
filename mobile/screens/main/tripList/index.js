@@ -34,7 +34,7 @@ export default function index({ navigation, setHeader, setUser, user }) {
             end={{ x: 0, y: 1 }}
             start={{ x: 1, y: 0 }}
 
-            style={{ width: "100%", height: "100%", backgroundColor: "gray", }}>
+            style={{ width: "100%", height: "100%", backgroundColor: "gray" }}>
             <View style={{
                 position: "absolute", width: "70%",
                 height: "100%",
@@ -115,13 +115,13 @@ export default function index({ navigation, setHeader, setUser, user }) {
                 marginTop: showSideBar.marginTop,
                 borderTopLeftRadius: showSideBar.borderRadius,
                 borderBottomLeftRadius: showSideBar.borderRadius,
-                position: "absolute"
+                position: "absolute",
             }}>
                 <LinearGradient
-                    colors={["#C04848", "#480048"]}
+                    colors={["#200122", "#FC354C", "#200122"]}
                     end={{ x: 0, y: 1 }}
-                    start={{ x: 1, y: 0 }}
-                    style={{ borderTopLeftRadius: 50 }}
+                    start={{ x: 1, y: 1 }}
+                    style={{ borderTopLeftRadius: 20 }}
                 >
 
 

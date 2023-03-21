@@ -1,16 +1,20 @@
 const pointRouter = require('express').Router();
 const { addPoint, deletePoint, editPoint, getAllPoints, getPointsOf1Trip } = require("../controllers/point-controllers");
-const { authorisation } = require("../controllers/admin-controllers")
 
 pointRouter.route('/')
-   .post(authorisation, addPoint)
+    .post((req, res) => {
+        addPoint(req, res)
+    })
     .get((req, res) => {
         getAllPoints(req, res)
     })
 pointRouter.route('/:trip/:id')
-    .delete(authorisation, deletePoint)
-    .patch(authorisation, editPoint)
-
+    .delete((req, res) => {
+        deletePoint(req, res)
+    })
+    .patch((req, res) => {
+        editPoint(req, res)
+    })
 pointRouter.route('/:trip')
     .get((req, res) => {
         getPointsOf1Trip(req, res)

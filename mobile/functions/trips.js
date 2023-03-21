@@ -6,7 +6,7 @@ let colors;
 
 
 export const getTrips = function (setTrips, windowHeight, Animated) {
-    return axios.get("http://10.0.2.2:3000/api/trip")
+    return axios.get("http://192.168.1.19:3000/api/trip")
         .then(r => {
             if (typeof r.data === "string") {
                 console.log(data)
@@ -96,7 +96,7 @@ export const handleView = (i, desc, Animated, windowHeight, isExpanded, trips, s
         setDesc("")
 
         setTimeout(() => {
-            setDesc(desc)
+            setDesc(desc.length > 200 ? desc?.slice(0, 200) + " ..." : desc)
         }, 500);
         setIsExpanded(i);
     }
@@ -140,6 +140,7 @@ export const handleSideBar = function (Animated, showSideBar, windowWidth, windo
             duration: 500,
             useNativeDriver: false,
         }).start();
+
         showSideBar.status = true
     } else {
         Animated.timing(showSideBar.marginLeft, {
@@ -162,7 +163,6 @@ export const handleSideBar = function (Animated, showSideBar, windowWidth, windo
             duration: 500,
             useNativeDriver: false,
         }).start();
-
         showSideBar.status = false
     }
 }

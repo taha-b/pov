@@ -12,8 +12,8 @@ export default function App({ points, latitude, longitude, navigate }) {
             }}
             initialRegion={longitude && latitude ? {
                 latitude, longitude,
-                latitudeDelta: 0.03,
-                longitudeDelta: 0.03,
+                latitudeDelta: 0.3,
+                longitudeDelta: 0.3,
             } : {
                 latitude: 36.8065,
                 longitude: 10.1815,
@@ -31,9 +31,8 @@ export default function App({ points, latitude, longitude, navigate }) {
                         title={e.name || ""}
                         description={e.desc || ""}>
                         <Callout onPress={() => navigate(e)}>
-                            <Layout style={{ width: 150, height: 100 }}>
-                                <Text category='h4' style={{ textAlign: "center" }}>{e.name || ""}</Text>
-                                <Text category='s1' style={{ textAlign: "center" }}>{e.desc || ""}</Text>
+                            <Layout style={{ width: 150, height: 100, justifyContent: "center", alignItems: "center" }}>
+                                <Text category='h4' >{e.name || ""}</Text>
                             </Layout>
                         </Callout>
                     </Marker>
