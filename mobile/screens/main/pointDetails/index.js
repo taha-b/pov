@@ -43,7 +43,6 @@ export default function pointDetails({ route, navigation, setUser, user }) {
   };
 
 
-  console.log(point?.tags)
   return (
     <View style={{ height: windowHeight }}>
       <Animated.View style={{
@@ -61,7 +60,7 @@ export default function pointDetails({ route, navigation, setUser, user }) {
               zIndex: 1,
               borderRadius: 1,
             }}
-            resizeMode="contain" />}
+            resizeMode="cover" />}
         <Animated.View style={{ zIndex: 5, marginTop: svgMargin, width: "100%", height: 92 }}>
           <Svg
             style={{
@@ -83,7 +82,7 @@ export default function pointDetails({ route, navigation, setUser, user }) {
           flexDirection: "row",
         }}>
           <View style={{ width: "59%", marginTop: "5%", }}>
-            <Text style={{ color: uiColors.primary, fontSize: 50, letterSpacing: -2 }}
+          <Text style={{ color: uiColors.primary, fontSize: point?.name?.length < 13 ? 50 : 35, letterSpacing: -2 }}
               category='h1'>{point?.name?.toUpperCase()}</Text>
           </View>
           <View style={{
@@ -107,7 +106,7 @@ export default function pointDetails({ route, navigation, setUser, user }) {
                 zIndex: -1,
                 marginTop: 10,
               }}>
-                {point?.tags?.map((e, i) => {
+                {point?.tag?.map((e, i) => {
                   return (
                     <Text key={i} style={{
                       color: uiColors.secondary,

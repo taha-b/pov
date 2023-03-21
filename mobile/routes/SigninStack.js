@@ -15,7 +15,7 @@ function SigninStack({ setUser }) {
                     {(props) => <Login {...props} setUser={setUser} />}
                 </Stack.Screen>
                 <Stack.Screen name="Signup">
-                    {(props) => <Signup {...props}  />}
+                    {(props) => <Signup {...props} />}
                 </Stack.Screen>
                 <Stack.Screen name="Welcome">
                     {(props) => <Welcome {...props} setUser={setUser} />}

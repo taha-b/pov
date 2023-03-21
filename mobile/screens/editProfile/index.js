@@ -3,11 +3,16 @@ import { useState } from 'react'
 import { LinearGradient } from 'expo-linear-gradient';
 import { Divider, Text, Input } from '@ui-kitten/components';
 import { editProfile } from "../../functions/signin"
+import Modal from "../../components/Signin/Modal"
+import Loading from "../../components/Loading/Loading"
+
 export default function index({ setUser, user }) {
 
   const [name, setName] = useState("");
   const [password, setPassword] = useState('');
   const [checkPass, setCheckPass] = useState('');
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
 
   console.log(user.name)
   return (
@@ -17,6 +22,8 @@ export default function index({ setUser, user }) {
         end={{ x: 0, y: 1 }}
         start={{ x: 1, y: 0 }}
         style={{ width: "100%", height: "100%" }}>
+        {error ? <Modal error={error} setError={setError} /> : null}
+        {loading ? <Loading /> : null}
 
         <View style={{
           width: 110, height: 110,
@@ -84,7 +91,7 @@ export default function index({ setUser, user }) {
           textStyle={{ color: "white", textAlign: "center", }}
         />
         <TouchableOpacity
-          onPress={() => editProfile(setUser, name, password, checkPass, user.id, user.email)}
+          onPress={() => editProfile(setUser, name, password, checkPass, user.id, user.email, setError, setLoading)}
           style={{
             alignSelf: "center",
             width: "40%",

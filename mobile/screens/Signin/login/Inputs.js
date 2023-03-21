@@ -7,7 +7,6 @@ export default function Inputs({ email, setEmail, password, setPassword, focus, 
 
         <View style={{ position: 'relative', display: "flex", alignItems: "center" }}>
             <Input
-                focus={focus}
                 setFocus={setFocus}
                 name={"Email"}
                 position={"45%"}
@@ -17,7 +16,6 @@ export default function Inputs({ email, setEmail, password, setPassword, focus, 
             />
             <View style={{ marginTop: 20 }}>
                 <Input
-                    focus={focus}
                     setFocus={setFocus}
                     name={"Password"}
                     position={"42%"}
