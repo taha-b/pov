@@ -11,8 +11,7 @@ node_modules
 dist
 dist-ssr
 *.local
-# Secret file
-.env
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
@@ -23,21 +22,3 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-
-node_modules/
-.expo/
-dist/
-npm-debug.*
-*.jks
-*.p8
-*.p12
-*.key
-*.mobileprovision
-*.orig.*
-web-build/
-
-# macOS
-.DS_Store
-
-# Temporary files created by Metro to check the health of the file watcher
-.metro-health-check*
